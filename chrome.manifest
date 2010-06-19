@@ -1,4 +1,5 @@
 locale  calendaryearview en-US  chrome/locale/en-US/
+locale  calendaryearview de-DE     chrome/locale/de-DE/
 locale  calendaryearview fr     chrome/locale/fr/
 locale  calendaryearview it     chrome/locale/it/
 content calendaryearview chrome/content/
