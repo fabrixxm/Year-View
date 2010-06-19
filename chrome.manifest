@@ -1,0 +1,10 @@
+locale  calendaryearview en-US  chrome/locale/en-US/
+locale  calendaryearview fr     chrome/locale/fr/
+locale  calendaryearview it     chrome/locale/it/
+content calendaryearview chrome/content/
+skin    calendaryearview classic/1.0    chrome/skin/classic/
+
+overlay	chrome://calendar/content/calendar-views.xul    chrome://calendaryearview/content/calendaryearview-overlay.xul
+overlay chrome://calendar/content/calendar-common-sets.xul chrome://calendaryearview/content/calendaryearview-common-sets.xul
+
+overlay	chrome://lightning/content/messenger-overlay-sidebar.xul   chrome://calendaryearview/content/calendaryearview-overlay-sidebar.xul

@@ -1,0 +1,17 @@
+@namespace url("http://www.mozilla.org/keymaster/gatekeeper/there.is.only.xul");
+
+calendar-year-view { 
+  -moz-binding: url(chrome://calendaryearview/content/calendar-view.xml#calendar-year-view);
+}
+calendar-year-base-view { 
+  -moz-binding: url(chrome://calendaryearview/content/calendar-year-view.xml#calendar-year-base-view);
+}
+calendar-year-day-box { 
+  -moz-binding: url(chrome://calendaryearview/content/calendar-year-view.xml#calendar-year-day-box);
+}
+calendar-year-day-box-item { 
+  -moz-binding: url(chrome://calendaryearview/content/calendar-year-view.xml#calendar-year-day-box-item);
+}
+calendar-year-day-label { 
+  -moz-binding: url(chrome://calendaryearview/content/calendar-year-view.xml#calendar-year-day-label);
+}

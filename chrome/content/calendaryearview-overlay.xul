@@ -1,0 +1,32 @@
+﻿<?xml version="1.0"?>
+
+<!DOCTYPE overlay [
+  <!ENTITY % calendaryearviewDTD SYSTEM "chrome://calendaryearview/locale/calendaryearview.dtd" >
+  %calendaryearviewDTD;
+]>
+
+
+<?xml-stylesheet href="chrome://calendar/skin/calendar-toolbar.css" type="text/css"?>
+<?xml-stylesheet href="chrome://calendaryearview/skin/calendaryearview.css" type="text/css"?>
+<?xml-stylesheet href="chrome://calendaryearview/content/calendaryearview-bindings.css" type="text/css"?>
+
+<overlay xmlns="http://www.mozilla.org/keymaster/gatekeeper/there.is.only.xul">
+    
+  <tabs id="view-tabs">
+    <tab id="calendar-year-view-button"
+            label="&calendar.year.button.label;"
+            tooltiptext="&calendar.year.button.tooltip;"
+            observes="calendar_year-view_command"
+            calview="year"
+    />
+  </tabs>
+  
+  <deck id="view-deck">
+    <calendar-year-view id="year-view" flex="1"
+                        context="calendar-view-context-menu"
+                        item-context="calendar-item-context-menu"
+                        insertafter="month-view"/>
+
+  </deck>
+  
+</overlay>

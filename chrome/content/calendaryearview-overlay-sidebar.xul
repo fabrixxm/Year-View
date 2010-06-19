@@ -1,0 +1,28 @@
+<?xml version="1.0"?>
+
+<!DOCTYPE overlay [
+  <!ENTITY % calendaryearviewDTD SYSTEM "chrome://calendaryearview/locale/calendaryearview.dtd" >
+  %calendaryearviewDTD;
+]>
+
+
+<?xml-stylesheet href="chrome://calendar/skin/calendar-toolbar.css" type="text/css"?>
+<?xml-stylesheet href="chrome://calendaryearview/skin/calendaryearview.css" type="text/css"?>
+
+<overlay xmlns="http://www.mozilla.org/keymaster/gatekeeper/there.is.only.xul">
+
+
+      <menupopup id="ltnTasksMenuPopup">
+        <menuitem id="ltnChangeViewYear"
+                  label="&calendar.year.button.label;"
+                  accesskey="&calendar.year.button.accesskey;"
+                  type="radio"
+                  name="calendarMenuViews"
+                  key="calendar-year-view-key"
+                  observes="calendar_year-view_command"
+                  insertafter="ltnChangeVievMonth"
+                  insertbefore="ltnBeforeCalendarViewSection"
+                  />
+      </menupopup>
+
+</overlay>

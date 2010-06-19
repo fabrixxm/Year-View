@@ -1,0 +1,63 @@
+/*--------------------------------------------------------------------
+ *   Year view button
+ *-------------------------------------------------------------------*/
+
+
+/* year view */
+calendar-year-view {
+    background-color: #FFFFFF;
+    padding: 2px;
+}
+
+
+calendar-year-day-label {
+    color: #000000;
+    background-color: white;
+    background-image: url("chrome://calendar/skin/calendar-day-label-back.png");
+    border-left: 1px solid #D2D2D2;
+    border-top: 1px solid #D2D2D2;
+    overflow-x: hidden;
+}
+calendar-year-day-label[selected="true"] {
+    background-color: #FFF0C0;
+}
+calendar-year-day-label[orient="vertical"] {
+    background-image: url("chrome://calendar/skin/calendar-day-label-back-vertical.png");
+    min-width: 110px;
+}
+
+
+calendar-year-day-box {
+    padding-right: 1px !important;
+    padding-bottom: 1px !important;
+    border:none !important;
+    border-left: 1px solid #D2D2D2 !important;
+    border-bottom: 1px solid #D2D2D2 !important;
+}
+
+calendar-year-day-box-item {
+    margin: 1px;
+    padding: 0px 1px;
+}
+
+calendar-year-day-box-item[selected="true"] .calendar-event-selection {
+    color: #000000 !important;
+    background-color: #ffdb67 !important;
+}
+
+calendar-year-view row > label {
+    margin: 0px !important;
+    border-bottom: 1px solid #D2D2D2;
+    padding-top: 1em;
+}
+
+/*calendar-year-day-box-item .calendar-event-details { display: none; }
+calendar-year-day-box-item .event-container { height: 3px; }*/
+calendar-year-day-box-item label{ font-size: 4pt; }
+calendar-year-day-box-item .alarm-image { height: 6px; width: 6px; }
+
+
+/* hide CWs */
+#calendarWeek {
+    display: none;
+}

@@ -1,0 +1,45 @@
+<?xml version="1.0"?>
+<RDF:RDF xmlns:em="http://www.mozilla.org/2004/em-rdf#"
+         xmlns:NC="http://home.netscape.com/NC-rdf#"
+         xmlns:RDF="http://www.w3.org/1999/02/22-rdf-syntax-ns#">
+  <RDF:Description RDF:about="urn:mozilla:install-manifest">
+        <em:id>yearview@kirgroup.com</em:id>
+        <em:name>Year View</em:name>
+        <em:version>0.3.0b3</em:version>
+        <em:creator>Fabio Comuni</em:creator>
+        <em:translator>Eric Brosselin</em:translator>
+        <em:description>Year view for calendar</em:description>
+        <em:homepageURL>http://kirgroup.com/</em:homepageURL>
+        <em:iconURL>chrome://calendaryearview/skin/icon-32.png</em:iconURL>
+        <em:targetApplication>
+            <RDF:Description>
+                   <em:id>{3550f703-e582-4d05-9a08-453d09bdfdc6}</em:id>
+                   <em:minVersion>3.0</em:minVersion>
+                   <em:maxVersion>3.0.* </em:maxVersion>
+            </RDF:Description>
+        </em:targetApplication>
+        <em:require>
+            <RDF:Description>
+                <em:id>{e2fda1a4-762b-4020-b5ad-a41df1933103}</em:id>
+                <em:minVersion>1.0b1</em:minVersion>
+                <em:minVersion>1.0</em:minVersion>
+            </RDF:Description>
+        </em:require>
+        <em:localized>
+            <RDF:Description>
+                <em:locale>it-IT</em:locale>
+                <em:name>Year View</em:name>
+                <em:description>Vista annuale per il calendario</em:description>
+            </RDF:Description>
+        </em:localized>
+        <em:localized>
+            <RDF:Description>
+                <em:locale>fr-FR</em:locale>
+                <em:name>Year View</em:name>
+                <em:description>Vue annuelle pour le calendrier</em:description>
+            </RDF:Description>
+        </em:localized>
+
+  </RDF:Description>
+</RDF:RDF>
+    
