@@ -11,7 +11,10 @@
 <?xml-stylesheet href="chrome://calendaryearview/content/calendaryearview-bindings.css" type="text/css"?>
 
 <overlay xmlns="http://www.mozilla.org/keymaster/gatekeeper/there.is.only.xul">
-    
+  
+  <toolbarbutton id="previous-view-button" tooltiptext-year="&calendar.navigation.prevyear.tooltip;"/>
+  <toolbarbutton id="next-view-button" tooltiptext-year="&calendar.navigation.nextyear.tooltip;"/>
+
   <tabs id="view-tabs">
     <tab id="calendar-year-view-button"
             label="&calendar.year.button.label;"

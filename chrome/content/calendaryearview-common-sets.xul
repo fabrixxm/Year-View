@@ -10,8 +10,15 @@
   <commandset id="calendar_commands">
     <command id="calendar_year-view_command" oncommand="showCalendarView('year')"/>
   </commandset>
+ 
+
+  <popup id="calendar-view-context-menu">
+    <menuitem id="calendar-view-context-menu-previous" label-year="&calendar.prevyear.label;" accesskey-year="&calendar.prevyear.accesskey;" />
+    <menuitem id="calendar-view-context-menu-next" label-year="&calendar.nextyear.label;" accesskey-year="&calendar.nextyear.accesskey;" />
+  </popup>
   
   <keyset id="calendar-keys">
     <key id="calendar-year-view-key" key="&calendar.yearView.key;" observes="calendar_year-view_command" modifiers="accel" insertafter="calendar-month-view-key" />
   </keyset>
 </overlay>
+
