@@ -1,4 +1,13 @@
 ﻿<!ENTITY calendar.year.button.label "Année">
 <!ENTITY calendar.year.button.tooltip "Afficher l'année">
+
 <!ENTITY calendar.year.button.accesskey "A">
 <!ENTITY calendar.yearView.key "5">
+
+<!ENTITY calendar.navigation.nextyear.tooltip "Année suivant">
+<!ENTITY calendar.navigation.prevyear.tooltip "Année précédente">
+
+<!ENTITY calendar.nextyear.label               "Année suivant" >
+<!ENTITY calendar.prevyear.label               "Année précédente" >
+<!ENTITY calendar.nextyear.accesskey           "s" >
+<!ENTITY calendar.prevyear.accesskey           "p" >

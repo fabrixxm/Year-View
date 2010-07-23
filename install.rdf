@@ -5,7 +5,7 @@
   <RDF:Description RDF:about="urn:mozilla:install-manifest">
         <em:id>yearview@kirgroup.com</em:id>
         <em:name>Year View</em:name>
-        <em:version>0.3.0b3</em:version>
+        <em:version>0.3.0b4</em:version>
         <em:creator>Fabio Comuni</em:creator>
         <em:translator>Eric Brosselin</em:translator>
         <em:translator>Jens Maurer</em:translator>        
@@ -22,8 +22,8 @@
         <em:require>
             <RDF:Description>
                 <em:id>{e2fda1a4-762b-4020-b5ad-a41df1933103}</em:id>
-                <em:maxVersion>1.0b2</em:maxVersion>
                 <em:minVersion>1.0</em:minVersion>
+                <em:maxVersion>1.0b2</em:maxVersion>
             </RDF:Description>
         </em:require>
         <em:localized>
