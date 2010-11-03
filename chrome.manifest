@@ -2,6 +2,7 @@ locale  calendaryearview en-US  chrome/locale/en-US/
 locale  calendaryearview de-DE     chrome/locale/de-DE/
 locale  calendaryearview fr     chrome/locale/fr/
 locale  calendaryearview it     chrome/locale/it/
+locale  calendaryearview es     chrome/locale/es/
 content calendaryearview chrome/content/
 skin    calendaryearview classic/1.0    chrome/skin/classic/
 

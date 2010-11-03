@@ -8,7 +8,8 @@
         <em:version>0.3.0b4</em:version>
         <em:creator>Fabio Comuni</em:creator>
         <em:translator>Eric Brosselin</em:translator>
-        <em:translator>Jens Maurer</em:translator>        
+        <em:translator>Jens Maurer</em:translator>
+        <em:translator>Jose Baeza Noci</em:translator>        
         <em:description>Year view for calendar</em:description>
         <em:homepageURL>http://kirgroup.com/</em:homepageURL>
         <em:iconURL>chrome://calendaryearview/skin/icon-32.png</em:iconURL>
@@ -31,6 +32,13 @@
                 <em:locale>it-IT</em:locale>
                 <em:name>Year View</em:name>
                 <em:description>Vista annuale per il calendario</em:description>
+            </RDF:Description>
+        </em:localized>
+        <em:localized>
+            <RDF:Description>
+                <em:locale>es-ES</em:locale>
+                <em:name>Year View</em:name>
+                <em:description>Vista anual para el calendario</em:description>
             </RDF:Description>
         </em:localized>
         <em:localized>
