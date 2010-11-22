@@ -244,9 +244,10 @@
                  mousethrough="always"
                  class="calendar-month-day-box-date-label" 
                  xbl:inherits="relation,selected,value"/>
-      <xul:vbox anonid="day-items" class="calendar-month-day-box-items-box" flex="1">
+      <xul:vbox anonid="day-items" class="calendar-year-day-box-items-box" flex="1">
         <children/>
       </xul:vbox>
+	<xul:label anonid="day-more" text="..." />
     </content>
 
     <implementation>

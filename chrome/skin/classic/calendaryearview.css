@@ -45,6 +45,13 @@ calendar-year-day-box-item[selected="true"] .calendar-event-selection {
     background-color: #ffdb67 !important;
 }
 
+
+.calendar-year-day-box-items-box {
+  overflow-y: hidden;
+  overflow-x: hidden;
+}
+
+
 calendar-year-view row > label {
     margin: 0px !important;
     border-bottom: 1px solid #D2D2D2;
