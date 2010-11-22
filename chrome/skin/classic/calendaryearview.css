@@ -50,6 +50,15 @@ calendar-year-day-box-item[selected="true"] .calendar-event-selection {
   overflow-y: hidden;
   overflow-x: hidden;
 }
+.calendar-year-day-box-more-off {
+	background-color: transparent;
+	font-size: 1pt;
+}
+.calendar-year-day-box-more-on {
+	background-color: transparent;
+	background-image: url(more.png);
+	font-size: 4pt;
+}
 
 
 calendar-year-view row > label {
