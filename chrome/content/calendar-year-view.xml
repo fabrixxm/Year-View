@@ -322,6 +322,7 @@
           }
 	  // Reset more
           this.morelabel.setAttribute("class","calendar-year-day-box-more-off");
+	  this.morelabel.setAttribute("tooltiptext","");
 
           if (!aDate) {
             //throw Components.results.NS_ERROR_NULL_POINTER;
