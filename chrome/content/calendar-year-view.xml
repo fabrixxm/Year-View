@@ -244,9 +244,10 @@
                  mousethrough="always"
                  class="calendar-month-day-box-date-label" 
                  xbl:inherits="relation,selected,value"/>
-      <xul:vbox anonid="day-items" class="calendar-month-day-box-items-box" flex="1">
+      <xul:vbox anonid="day-items" class="calendar-year-day-box-items-box" flex="1">
         <children/>
       </xul:vbox>
+	<xul:label anonid="day-more" class="calendar-year-day-box-more-off" value=" " />
     </content>
 
     <implementation>
@@ -280,6 +281,9 @@
 
       <property name="dayitems">
         <getter>return document.getAnonymousElementByAttribute(this, "anonid", "day-items");</getter>
+      </property>
+      <property name="morelabel">
+	<getter>return document.getAnonymousElementByAttribute(this, "anonid", "day-more");</getter>
       </property>
 
       <property name="showMonthLabel">
@@ -316,6 +320,8 @@
           while(this.hasChildNodes()) {
               this.removeChild(this.lastChild);
           }
+	  // Reset more
+          this.morelabel.setAttribute("class","calendar-year-day-box-more-off");
 
           if (!aDate) {
             //throw Components.results.NS_ERROR_NULL_POINTER;
@@ -455,6 +461,11 @@
 
       <method name="relayout">
         <body><![CDATA[
+	  var df = Components.classes["@mozilla.org/calendar/datetime-formatter;1"].
+                       getService(Components.interfaces.calIDateTimeFormatter);
+	  var timezone = this.calendarView ? this.calendarView.mTimezone : calendarDefaultTimezone();
+
+	  var tooltip="";
           for (var i = 0; i < this.mItemData.length; i++) {
             var itd = this.mItemData[i];
 
@@ -477,7 +488,15 @@
               box.occurrence = itd.item;
               itd.box = box;
             }
+	    tooltip += itd.item.title+"\n";
           }
+	// needs more?
+	if (this.dayitems.clientHeight < (this.mItemData[0].box.clientHeight * this.mItemData.length)){
+		this.morelabel.setAttribute("class","calendar-year-day-box-more-on");
+		this.morelabel.setAttribute("tooltiptext", tooltip);
+	} else {
+		this.morelabel.setAttribute("class","calendar-year-day-box-more-off");
+	}
         ]]></body>
       </method>
       <method name="onDropItem">
