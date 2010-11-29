@@ -1,0 +1,13 @@
+<!ENTITY calendar.year.button.label "Årsvy">
+<!ENTITY calendar.year.button.tooltip "Byt till årsvy">
+
+<!ENTITY calendar.year.button.accesskey "Å">
+<!ENTITY calendar.yearView.key "5">
+
+<!ENTITY calendar.navigation.nextyear.tooltip "Ett år framåt">
+<!ENTITY calendar.navigation.prevyear.tooltip "Ett år bakåt">
+
+<!ENTITY calendar.nextyear.label               "Nästa år" >
+<!ENTITY calendar.prevyear.label               "Föregående år" >
+<!ENTITY calendar.nextyear.accesskey           "ä" >
+<!ENTITY calendar.prevyear.accesskey           "ö" >
