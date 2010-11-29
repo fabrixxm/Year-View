@@ -13,3 +13,5 @@ Contributes
 -----------
 - French localization by Eric Brosselin
 - German localization by Jens Maurer
+- Spanish localization by Jose Baeza Noci
+- Swedish localization by Mikael Hiort af Ornäs
