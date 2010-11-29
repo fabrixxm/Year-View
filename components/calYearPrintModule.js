@@ -94,11 +94,14 @@ var calYearPrintModule = {
         for (var i = 0; i < componentData.length; i++) {
             if (cid.equals(componentData[i].cid)) {
                 if (componentData[i].onComponentLoad) {
-                    eval(componentData[i].onComponentLoad);
+                    this.__parent__[componentData[i].onComponentLoad]();
                 }
                 // eval to get usual scope-walking
-                //dump("\tmakeFactory\n");
-                return this.makeFactoryFor(eval(componentData[i].constructor));
+                /*dump("getClassObject\n");
+                dump("\tcontructor: "+ componentData[i].constructor+"\n");
+                dump("\t\t : "+ this.__parent__+"\n");
+                dump("\t\t : "+ this.__parent__[componentData[i].constructor]+"\n");*/
+                return this.makeFactoryFor(this.__parent__[componentData[i].constructor]);
             }
         }
 
