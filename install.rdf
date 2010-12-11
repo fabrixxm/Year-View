@@ -11,6 +11,7 @@
         <em:translator>Jens Maurer</em:translator>
         <em:translator>Jose Baeza Noci</em:translator>        
         <em:translator>Mikael Hiort af Ornäs</em:translator>
+        <em:translator>Krzysztof Klimczak</em:translator>
         <em:description>Year view for calendar</em:description>
         <em:homepageURL>http://kirgroup.com/</em:homepageURL>
         <em:iconURL>chrome://calendaryearview/skin/icon-32.png</em:iconURL>
@@ -61,6 +62,13 @@
                 <em:locale>sv-SE</em:locale>
                 <em:name>Year View</em:name>
                 <em:description>Lägger till en årsvy för din kalender</em:description>
+            </RDF:Description>
+        </em:localized>
+        <em:localized>
+            <RDF:Description>
+                <em:locale>pl</em:locale>
+                <em:name>Year View</em:name>
+                <em:description>Widok roczny dla kalendarza</em:description>
             </RDF:Description>
         </em:localized>        
   </RDF:Description>
