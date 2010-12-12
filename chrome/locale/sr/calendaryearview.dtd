@@ -1,0 +1,10 @@
+<!ENTITY calendar.year.button.label "Година">
+<!ENTITY calendar.year.button.tooltip "Иди на приказ године">
+<!ENTITY calendar.year.button.accesskey "Г">
+<!ENTITY calendar.yearView.key "5">
+<!ENTITY calendar.navigation.nextyear.tooltip "Једна година унапред">
+<!ENTITY calendar.navigation.prevyear.tooltip "Једна година уназад">
+<!ENTITY calendar.nextyear.label "Следећа година">
+<!ENTITY calendar.prevyear.label "Претходна година">
+<!ENTITY calendar.nextyear.accesskey "с">
+<!ENTITY calendar.prevyear.accesskey "п">
