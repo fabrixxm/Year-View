@@ -6,6 +6,8 @@ locale  calendaryearview it     chrome/locale/it/
 locale  calendaryearview es     chrome/locale/es/
 locale  calendaryearview pl     chrome/locale/pl/
 locale  calendaryearview sr     chrome/locale/sr/
+locale  calendaryearview si-LK     chrome/locale/si-LK/
+locale  calendaryearview uk-UA     chrome/locale/uk-UA/
 
 content calendaryearview chrome/content/
 skin    calendaryearview classic/1.0    chrome/skin/classic/

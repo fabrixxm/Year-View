@@ -1,0 +1,10 @@
+<!ENTITY calendar.year.button.label "වසර">
+<!ENTITY calendar.year.button.tooltip "වාර්ෂික දර්ශනයට">
+<!ENTITY calendar.year.button.accesskey "අවු">
+<!ENTITY calendar.yearView.key "5">
+<!ENTITY calendar.navigation.nextyear.tooltip "වසරක් පෙරට">
+<!ENTITY calendar.navigation.prevyear.tooltip "වසරක් පසුපසට">
+<!ENTITY calendar.nextyear.label "ඊලග වසර">
+<!ENTITY calendar.prevyear.label "පසුගිය වසර">
+<!ENTITY calendar.nextyear.accesskey "x">
+<!ENTITY calendar.prevyear.accesskey "s">

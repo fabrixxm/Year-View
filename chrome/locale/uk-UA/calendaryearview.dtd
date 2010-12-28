@@ -1,0 +1,10 @@
+<!ENTITY calendar.year.button.label "Рік">
+<!ENTITY calendar.year.button.tooltip "Перейти до Year view">
+<!ENTITY calendar.year.button.accesskey "р">
+<!ENTITY calendar.yearView.key "5">
+<!ENTITY calendar.navigation.nextyear.tooltip "Один рік вперед">
+<!ENTITY calendar.navigation.prevyear.tooltip "Один рік назад">
+<!ENTITY calendar.nextyear.label "Наступний рік">
+<!ENTITY calendar.prevyear.label "Попередній рік">
+<!ENTITY calendar.nextyear.accesskey "а">
+<!ENTITY calendar.prevyear.accesskey "п">
