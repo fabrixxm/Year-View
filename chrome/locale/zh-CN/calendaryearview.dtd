@@ -1,0 +1,10 @@
+<!ENTITY calendar.year.button.label "年">
+<!ENTITY calendar.year.button.tooltip "转到年视图">
+<!ENTITY calendar.year.button.accesskey "Y">
+<!ENTITY calendar.yearView.key "5">
+<!ENTITY calendar.navigation.nextyear.tooltip "前进一年">
+<!ENTITY calendar.navigation.prevyear.tooltip "后退一年">
+<!ENTITY calendar.nextyear.label "下一年">
+<!ENTITY calendar.prevyear.label "上一年">
+<!ENTITY calendar.nextyear.accesskey "x">
+<!ENTITY calendar.prevyear.accesskey "s">

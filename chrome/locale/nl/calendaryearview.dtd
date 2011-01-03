@@ -1,0 +1,13 @@
+<!ENTITY calendar.year.button.label "Jaar">
+<!ENTITY calendar.year.button.tooltip "Ga naar Jaaroverzicht">
+
+<!ENTITY calendar.year.button.accesskey "J">
+<!ENTITY calendar.yearView.key "5">
+
+<!ENTITY calendar.navigation.nextyear.tooltip "Een jaar vooruit">
+<!ENTITY calendar.navigation.prevyear.tooltip "Een jaar terug">
+
+<!ENTITY calendar.nextyear.label               "Volgend jaar" >
+<!ENTITY calendar.prevyear.label               "Vorig jaar" >
+<!ENTITY calendar.nextyear.accesskey           "x" >
+<!ENTITY calendar.prevyear.accesskey           "s" >
