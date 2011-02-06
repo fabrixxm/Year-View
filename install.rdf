@@ -5,7 +5,7 @@
   <RDF:Description RDF:about="urn:mozilla:install-manifest">
         <em:id>yearview@kirgroup.com</em:id>
         <em:name>Year View</em:name>
-        <em:version>0.3.4</em:version>
+        <em:version>0.3.5</em:version>
         <em:creator>Fabio Comuni</em:creator>
         <em:translator>Eric Brosselin</em:translator>
         <em:translator>Jens Maurer</em:translator>
@@ -13,6 +13,8 @@
         <em:translator>Mikael Hiort af Ornäs</em:translator>
         <em:translator>Krzysztof Klimczak</em:translator>
         <em:translator>DakSrbija</em:translator>
+        <em:translator>Joergen</em:translator>
+        <em:translator>gutierrez</em:translator>
         <em:description>Year view for calendar</em:description>
         <em:homepageURL>http://kirgroup.com/</em:homepageURL>
         <em:iconURL>chrome://calendaryearview/skin/icon-32.png</em:iconURL>
