@@ -1,0 +1,10 @@
+<!ENTITY calendar.year.button.label "Ano">
+<!ENTITY calendar.year.button.tooltip "Ir para o visualizador de Ano">
+<!ENTITY calendar.year.button.accesskey "A">
+<!ENTITY calendar.yearView.key "5">
+<!ENTITY calendar.navigation.nextyear.tooltip "Avançar um Ano">
+<!ENTITY calendar.navigation.prevyear.tooltip "Voltar um Ano">
+<!ENTITY calendar.nextyear.label "Próximo Ano">
+<!ENTITY calendar.prevyear.label "Ano Anterior">
+<!ENTITY calendar.nextyear.accesskey "x">
+<!ENTITY calendar.prevyear.accesskey "a">

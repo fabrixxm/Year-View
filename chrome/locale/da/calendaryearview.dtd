@@ -1,0 +1,10 @@
+<!ENTITY calendar.year.button.label "År">
+<!ENTITY calendar.year.button.tooltip "Skift til årsoversigt">
+<!ENTITY calendar.year.button.accesskey "Å">
+<!ENTITY calendar.yearView.key "5">
+<!ENTITY calendar.navigation.nextyear.tooltip "Et år frem">
+<!ENTITY calendar.navigation.prevyear.tooltip "Et år tilbage">
+<!ENTITY calendar.nextyear.label "Næste år">
+<!ENTITY calendar.prevyear.label "Forrige år">
+<!ENTITY calendar.nextyear.accesskey "æ">
+<!ENTITY calendar.prevyear.accesskey "F">
