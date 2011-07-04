@@ -7,8 +7,9 @@
 
 
 <overlay xmlns="http://www.mozilla.org/keymaster/gatekeeper/there.is.only.xul">
+  <script type="application/javascript" src="chrome://calendaryearview/content/calendaryearview-common-sets.js"/>
   <commandset id="calendar_commands">
-    <command id="calendar_year-view_command" oncommand="showCalendarView('year')"/>
+    <command id="calendar_year-view_command" oncommand="goDoCommand('calendar_year-view_command')"/>
   </commandset>
  
 

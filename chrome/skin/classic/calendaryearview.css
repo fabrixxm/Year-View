@@ -57,6 +57,8 @@ calendar-year-day-box-item[selected="true"] .calendar-event-selection {
 .calendar-year-day-box-more-on {
 	background-color: transparent;
 	background-image: url(more.png);
+	background-repeat: no-repeat;
+	background-position: center center;
 	font-size: 4pt;
 }
 
