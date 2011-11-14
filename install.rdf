@@ -67,7 +67,31 @@
                 <em:name>Year View</em:name>
                 <em:description>Widok roczny dla kalendarza</em:description>
             </RDF:Description>
-        </em:localized>        
+        </em:localized>       
+       <em:localized>
+            <RDF:Description>
+                <em:locale>pt-BR</em:locale>
+                <em:name>Year View</em:name>
+                <em:description>Visualizador de ano para calendário</em:description>
+            </RDF:Description>
+        </em:localized>      
+       <em:localized>
+            <RDF:Description>
+                <em:locale>da</em:locale>
+                <em:name>Year View</em:name>
+                <em:description>Udvider kalenderen med en årsoversigt</em:description>
+            </RDF:Description>
+        </em:localized>
+        <em:localized>
+          <Description>
+            <em:locale>tr</em:locale>
+            <em:name>Yıl Görünümü</em:name>
+            <em:description>Takvimin Yıl Görünümü</em:description>
+            <em:creator>Fabio Comuni</em:creator>
+            <em:homepageURL>https://github.com/fabrixxm/Year-View</em:homepageURL>
+            <em:translator>Sinan Kaan Yerli</em:translator>
+          </Description>
+        </em:localized>               
   </RDF:Description>
 </RDF:RDF>
     

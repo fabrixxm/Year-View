@@ -12,7 +12,7 @@ locale  calendaryearview sr     chrome/locale/sr/
 locale  calendaryearview si-LK     chrome/locale/si-LK/
 locale  calendaryearview uk-UA     chrome/locale/uk-UA/
 locale  calendaryearview zh-CN     chrome/locale/zh-CN/
-locale  calendaryearview tr-TR     chrome/locale/tr-TR/
+locale  calendaryearview tr     chrome/locale/tr/
 
 content calendaryearview chrome/content/
 skin    calendaryearview classic/1.0    chrome/skin/classic/

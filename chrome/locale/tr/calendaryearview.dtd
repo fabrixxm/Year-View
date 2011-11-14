@@ -1,10 +1,10 @@
 <!ENTITY calendar.year.button.label "Yıl">
-<!ENTITY calendar.year.button.tooltip "Yıl gösterimine git">
-<!ENTITY calendar.year.button.accesskey "T">
+<!ENTITY calendar.year.button.tooltip "Yıl görünümüne git">
+<!ENTITY calendar.year.button.accesskey "Y">
 <!ENTITY calendar.yearView.key "5">
 <!ENTITY calendar.navigation.nextyear.tooltip "Bir Yıl İleri">
 <!ENTITY calendar.navigation.prevyear.tooltip "Bir Yıl Geri">
 <!ENTITY calendar.nextyear.label "Sonraki Yıl">
 <!ENTITY calendar.prevyear.label "Önceki Yıl">
-<!ENTITY calendar.nextyear.accesskey "S">
-<!ENTITY calendar.prevyear.accesskey "Ö">
+<!ENTITY calendar.nextyear.accesskey "x">
+<!ENTITY calendar.prevyear.accesskey "s">
