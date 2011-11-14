@@ -21,11 +21,20 @@
         <em:iconURL>chrome://calendaryearview/skin/icon-32.png</em:iconURL>
         <em:targetApplication>
             <RDF:Description>
+                   <!-- thunderbird-->
                    <em:id>{3550f703-e582-4d05-9a08-453d09bdfdc6}</em:id>
                    <em:minVersion>3.0</em:minVersion>
-                   <em:maxVersion>5.*</em:maxVersion>
+                   <em:maxVersion>8.*</em:maxVersion>
             </RDF:Description>
         </em:targetApplication>
+        <em:targetApplication>
+          <RDF:Description>
+            <!-- Seamonkey -->
+            <em:id>{92650c4d-4b8e-4d2a-b7eb-24ecf4f6b63a}</em:id>
+            <em:minVersion>2.2</em:minVersion>
+            <em:maxVersion>2.4.*</em:maxVersion>
+          </RDF:Description>
+        </em:targetApplication>         
         <em:localized>
             <RDF:Description>
                 <em:locale>it-IT</em:locale>
