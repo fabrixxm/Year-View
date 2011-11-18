@@ -74,8 +74,3 @@ calendar-year-day-box-item .event-container { height: 3px; }*/
 calendar-year-day-box-item label{ font-size: 4pt; }
 calendar-year-day-box-item .alarm-image { height: 6px; width: 6px; }
 
-
-/* hide CWs */
-#calendarWeek {
-    display: none;
-}
