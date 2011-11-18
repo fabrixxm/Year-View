@@ -21,6 +21,7 @@
             tooltiptext="&calendar.year.button.tooltip;"
             observes="calendar_year-view_command"
             calview="year"
+            insertafter="calendar-month-view-button"
     />
   </tabs>
   
