@@ -8,3 +8,4 @@
 <!ENTITY calendar.prevyear.label "Ano Anterior">
 <!ENTITY calendar.nextyear.accesskey "x">
 <!ENTITY calendar.prevyear.accesskey "a">
+<!ENTITY calendar.property.hideinyearview.label "Hide in Year view">

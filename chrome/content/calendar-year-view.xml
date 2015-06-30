@@ -347,6 +347,10 @@
       <method name="addItem">
         <parameter name="aItem"/>
         <body><![CDATA[
+          // skip item if hidden in this view
+          if (aItem.calendar.getProperty('yearview.hide')===true)
+            return;
+
           // XXX This scales badly for adding lots of items: O(N^2)
           for each (ed in this.mItemData) {
             if (aItem.hashId == ed.item.hashId)
@@ -935,7 +939,7 @@
               row.childNodes[j].showMonthLabel = false;
               row.childNodes[j].setDate(null);
             }
-            
+
 
             for (var jj = rowdate.weekday; jj < rowdate.endOfMonth.day+rowdate.weekday; jj++) {
               j=jj+1;

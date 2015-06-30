@@ -8,3 +8,4 @@
 <!ENTITY calendar.prevyear.label "Претходна година">
 <!ENTITY calendar.nextyear.accesskey "с">
 <!ENTITY calendar.prevyear.accesskey "п">
+<!ENTITY calendar.property.hideinyearview.label "Hide in Year view">

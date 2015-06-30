@@ -11,3 +11,5 @@
 <!ENTITY calendar.prevyear.label "Anno precedente">
 <!ENTITY calendar.nextyear.accesskey "s">
 <!ENTITY calendar.prevyear.accesskey "d">
+
+<!ENTITY calendar.property.hideinyearview.label "Nascondi in vista Anno">

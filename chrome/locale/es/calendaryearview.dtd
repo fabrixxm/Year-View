@@ -11,3 +11,5 @@
 <!ENTITY calendar.prevyear.label "Año previo">
 <!ENTITY calendar.nextyear.accesskey "s">
 <!ENTITY calendar.prevyear.accesskey "p">
+
+<!ENTITY calendar.property.hideinyearview.label "Hide in Year view">

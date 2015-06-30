@@ -1,0 +1,21 @@
+<?xml version="1.0"?>
+
+<!DOCTYPE overlay [
+  <!ENTITY % calendaryearviewDTD SYSTEM "chrome://calendaryearview/locale/calendaryearview.dtd" >
+  %calendaryearviewDTD;
+]>
+
+
+<overlay xmlns="http://www.mozilla.org/keymaster/gatekeeper/there.is.only.xul">
+      <script type="application/javascript" src="chrome://calendaryearview/content/calendar-properties-dialog-overlay.js"/>
+      <rows id="calendar-properties-rows">
+        <row id="calendar-hide-yearview"
+             align="center">
+          <spacer/>
+          <checkbox id="hide-yearview"
+                    label="&calendar.property.hideinyearview.label;"
+                    disable-with-calendar="true"/>
+        </row>
+      </rows>
+
+</overlay>
