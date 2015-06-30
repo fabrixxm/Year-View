@@ -12,7 +12,7 @@
 <overlay xmlns="http://www.mozilla.org/keymaster/gatekeeper/there.is.only.xul">
 
 
-      <menupopup id="ltnTasksMenuPopup">
+      <menupopup id="ltnCalendarMenuPopup">
         <menuitem id="ltnChangeViewYear"
                   label="&calendar.year.button.label;"
                   accesskey="&calendar.year.button.accesskey;"
@@ -20,7 +20,7 @@
                   name="calendarMenuViews"
                   key="calendar-year-view-key"
                   observes="calendar_year-view_command"
-                  insertafter="ltnChangeVievMonth"
+                  insertafter="ltnChangeViewMonth"
                   insertbefore="ltnBeforeCalendarViewSection"
                   />
       </menupopup>
