@@ -6,11 +6,11 @@
         <em:id>yearview@kirgroup.com</em:id>
         <em:type>2</em:type>
         <em:name>Year View</em:name>
-        <em:version>0.4.4</em:version>
+        <em:version>0.4.5</em:version>
         <em:creator>Fabio Comuni</em:creator>
         <em:translator>Eric Brosselin</em:translator>
         <em:translator>Jens Maurer</em:translator>
-        <em:translator>Jose Baeza Noci</em:translator>        
+        <em:translator>Jose Baeza Noci</em:translator>
         <em:translator>Mikael Hiort af Ornäs</em:translator>
         <em:translator>Krzysztof Klimczak</em:translator>
         <em:translator>DakSrbija</em:translator>
@@ -20,27 +20,27 @@
         <em:homepageURL>http://kirgroup.com/</em:homepageURL>
         <em:iconURL>chrome://calendaryearview/skin/icon-32.png</em:iconURL>
         <em:targetApplication>
-            <RDF:Description>
-                   <!-- thunderbird-->
-                   <em:id>{3550f703-e582-4d05-9a08-453d09bdfdc6}</em:id>
-                   <em:minVersion>6.0</em:minVersion>
-                   <em:maxVersion>31.*</em:maxVersion>
-            </RDF:Description>
+          <RDF:Description>
+            <!-- thunderbird-->
+            <em:id>{3550f703-e582-4d05-9a08-453d09bdfdc6}</em:id>
+            <em:minVersion>6.0</em:minVersion>
+            <em:maxVersion>38.*</em:maxVersion>
+          </RDF:Description>
         </em:targetApplication>
         <em:targetApplication>
           <RDF:Description>
             <!-- Seamonkey -->
             <em:id>{92650c4d-4b8e-4d2a-b7eb-24ecf4f6b63a}</em:id>
             <em:minVersion>2.2</em:minVersion>
-            <em:maxVersion>2.26.*</em:maxVersion>
+            <em:maxVersion>2.35.*</em:maxVersion>
           </RDF:Description>
-        </em:targetApplication>         
+        </em:targetApplication>
         <em:localized>
-            <RDF:Description>
-                <em:locale>it-IT</em:locale>
-                <em:name>Year View</em:name>
-                <em:description>Vista annuale per il calendario</em:description>
-            </RDF:Description>
+          <RDF:Description>
+            <em:locale>it-IT</em:locale>
+            <em:name>Year View</em:name>
+            <em:description>Vista annuale per il calendario</em:description>
+          </RDF:Description>
         </em:localized>
         <em:localized>
             <RDF:Description>
@@ -76,14 +76,14 @@
                 <em:name>Year View</em:name>
                 <em:description>Widok roczny dla kalendarza</em:description>
             </RDF:Description>
-        </em:localized>       
+        </em:localized>
        <em:localized>
             <RDF:Description>
                 <em:locale>pt-BR</em:locale>
                 <em:name>Year View</em:name>
                 <em:description>Visualizador de ano para calendário</em:description>
             </RDF:Description>
-        </em:localized>      
+        </em:localized>
        <em:localized>
             <RDF:Description>
                 <em:locale>da</em:locale>
@@ -100,7 +100,6 @@
             <em:homepageURL>https://github.com/fabrixxm/Year-View</em:homepageURL>
             <em:translator>Sinan Kaan Yerli</em:translator>
           </Description>
-        </em:localized>               
+        </em:localized>
   </RDF:Description>
 </RDF:RDF>
-    

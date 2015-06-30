@@ -239,10 +239,10 @@
 
   <binding id="calendar-year-day-box" extends="chrome://calendar/content/widgets/calendar-widgets.xml#dragndropContainer">
     <content orient="vertical">
-      <xul:label anonid="day-label" 
+      <xul:label anonid="day-label"
                  crop="end"
                  mousethrough="always"
-                 class="calendar-month-day-box-date-label" 
+                 class="calendar-month-day-box-date-label"
                  xbl:inherits="relation,selected,value"/>
       <xul:vbox anonid="day-items" class="calendar-year-day-box-items-box" flex="1">
         <children/>
@@ -309,8 +309,8 @@
           return val;
         ]]></setter>
       </property>
-      
-      
+
+
       <method name="setDate">
         <parameter name="aDate"/>
         <body><![CDATA[
@@ -501,7 +501,7 @@
         ]]></body>
       </method>
       <method name="onDropItem">
-        <parameter name="aItem"/>      
+        <parameter name="aItem"/>
         <body><![CDATA[
           return cal.moveItem(aItem, this.mDate);
         ]]></body>
@@ -543,7 +543,7 @@
         <xul:grid anonid="yeargrid" flex="1">
           <xul:columns anonid="yeargridcolumns" equalsize="always" />
           <xul:rows anonid="yeargridrows" equalsize="always" />
-        </xul:grid> 
+        </xul:grid>
       </xul:vbox>
 
 
@@ -553,8 +553,11 @@
 
       <!-- constructor -->
       <constructor><![CDATA[
+        Components.utils.import("resource://gre/modules/Preferences.jsm");
+        Components.utils.import("resource://calendar/modules/calViewUtils.jsm");
+
          // Set the preference for the default start of the week
-         this.weekStartOffset = getPrefSafe("calendar.week.start", 0);
+         this.weekStartOffset = Preferences.get("calendar.week.start", 0);
          /*
           for (var i = 0; i < 7; i++) {
             let hdr = createXULElement("calendar-day-label");
@@ -562,14 +565,14 @@
             hdr.weekDay = (i + this.mWeekStartOffset) % 7;
             hdr.shortWeekNames = false;
           }*/
-         
+
          var maxday=37;
-         
+
          // header "month name"
          var hdr = createXULElement("calendar-day-label");
          this.labeldaybox.appendChild(hdr);
          hdr.shortWeekNames = true;
-         
+
          // week day name heads
          for (var i=0; i<maxday; i++){
             var hdr = createXULElement("calendar-year-day-label");
@@ -577,7 +580,7 @@
             hdr.weekDay = i % 7;
             hdr.shortWeekNames = true;
          }
-         
+
          /* columns */
          yeargridcolumns =  document.getAnonymousElementByAttribute(this, "anonid", "yeargridcolumns");
          for (var d=0; d<maxday+1; d++) {
@@ -585,28 +588,28 @@
             col.setAttribute("flex", "1");
             col.setAttribute("class", "calendar-month-view-grid-column");
             yeargridcolumns.appendChild(col);
-         } 
-         
+         }
+
          //yeargridrows =  document.getAnonymousElementByAttribute(this, "anonid", "yeargridrows");
          /* righe e giorni */
          for (var m=0; m<12; m++) {
             var row = createXULElement("row");
             row.setAttribute("flex","1");
             row.setAttribute("class", "calendar-month-view-grid-row");
-            
+
             var day = createXULElement("label");
             day.setAttribute("flex","1");
             var monthName = calGetString("dateFormat", "month." + (m+1) + ".Mmm");
             day.setAttribute("value",monthName);
             row.appendChild(day);
-           
+
             for (var d=0; d<maxday; d++) {
                var day = createXULElement("calendar-year-day-box");
                row.appendChild(day);
             }
             this.yeargridrows.appendChild(row);
          }
-         
+
       ]]></constructor>
 
       <!-- fields -->
@@ -884,7 +887,7 @@
           if (this.mSelectedItems.length) {
             this.mSelectedItems = [];
           }
-	  
+
           // Clear out the old selection, since it won't be valid after relayout
           if (this.mSelectedDayBox) {
             this.mSelectedDayBox.selected = false;
@@ -911,21 +914,21 @@
           var dateList = this.getDateList({})
 
           var rows = this.yeargridrows.childNodes;
-          
 
 
-          // Iterate through each monthgridrow and set up the day-boxes that 
+
+          // Iterate through each monthgridrow and set up the day-boxes that
           // are its child nodes.  Remember, childNodes is not a normal array,
-          // so don't use the in operator if you don't want extra properties 
+          // so don't use the in operator if you don't want extra properties
           // coming out.
           for (var i = 0; i < rows.length; i++) {
             var row = rows[i];
 
             rowdate = this.mStartDate.clone()
-            rowdate.month = i; 
+            rowdate.month = i;
             var date = rowdate.clone()
-            
-            
+
+
             for (var j = 1; j < row.childNodes.length; j++){
               row.childNodes[j].setAttribute("class","calendar-month-day-box-other-month");
               row.childNodes[j].setAttribute("relation","");
@@ -933,7 +936,8 @@
               row.childNodes[j].setDate(null);
             }
             
-            for (var jj = rowdate.jsDate.getDay(); jj < rowdate.endOfMonth.day+rowdate.jsDate.getDay(); jj++) {
+
+            for (var jj = rowdate.weekday; jj < rowdate.endOfMonth.day+rowdate.weekday; jj++) {
               j=jj+1;
               var daybox = row.childNodes[j];
               var daydate = date.clone()
@@ -944,7 +948,7 @@
               // Set the box-class depending on if this box displays a day in
               // the month being currently shown or not.
               var boxClass = "calendar-month-day-box-current-month";
-              
+
               function matchesDayOff(dayOffNum) { return dayOffNum == date.weekday; }
               if (this.mDaysOffArray.some(matchesDayOff)) {
                 boxClass = "calendar-month-day-box-day-off " + boxClass;
@@ -968,10 +972,10 @@
               daybox.setDate(daydate);
               daybox.showMonthLabel = true;
               daybox.calendarView = this;
-              
+
               //daybox.date = date;
               dateBoxes.push(daybox);
-              
+
               /*
               var boxdata = {
                 date: daydate,
@@ -979,7 +983,7 @@
                 box: daybox
               };
               dateBoxes.push(boxdata);*/
-              
+
               date.day += 1;
 
             }
@@ -1147,8 +1151,8 @@
         <parameter name="aAlarmItem"/>
         <parameter name="aStop"/>
         <body><![CDATA[
-          var showIndicator = getPrefSafe("calendar.alarms.indicator.show", true);
-          var totaltime = getPrefSafe("calendar.alarms.indicator.totaltime", 3600);
+          var showIndicator = Preferences.get("calendar.alarms.indicator.show", true);
+          var totaltime = Preferences.get("calendar.alarms.indicator.totaltime", 3600);
 
           if (!aStop && (!showIndicator || totaltime < 1)) {
             // No need to animate if the indicator should not be shown.
@@ -1186,7 +1190,7 @@
 
     <handlers>
       <handler event="DOMMouseScroll"><![CDATA[
-        let scrollEnabled = getPrefSafe('calendar.view.mousescroll', true);
+        let scrollEnabled = Preferences.get('calendar.view.mousescroll', true);
         if (!event.ctrlKey &&
             !event.shiftKey &&
             !event.altKey &&
