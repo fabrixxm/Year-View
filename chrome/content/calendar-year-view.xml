@@ -239,18 +239,22 @@
 
   <binding id="calendar-year-day-box" extends="chrome://calendar/content/widgets/calendar-widgets.xml#dragndropContainer">
     <content orient="vertical">
+    <xul:hbox>
         <xul:label anonid="week-label"
+        	       align="left"
+        		   value="X"
                    flex="1"
                    crop="end"
-                   hidden="true"
                    mousethrough="always"
                    class="calendar-month-day-box-week-label calendar-month-day-box-date-label"
                    xbl:inherits="relation,selected"/>
       <xul:label anonid="day-label"
+                 align="right"
                  crop="end"
                  mousethrough="always"
                  class="calendar-month-day-box-date-label"
                  xbl:inherits="relation,selected,value"/>
+	</xul:hbox>
       <xul:vbox anonid="day-items" class="calendar-year-day-box-items-box" flex="1">
         <children/>
       </xul:vbox>
