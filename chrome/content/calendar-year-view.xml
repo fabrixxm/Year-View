@@ -606,12 +606,13 @@
          }
 
          //yeargridrows =  document.getAnonymousElementByAttribute(this, "anonid", "yeargridrows");
-         /* righe e giorni */
+         /* rows and days */
          for (var m=0; m<12; m++) {
             var row = createXULElement("row");
             row.setAttribute("flex","1");
             row.setAttribute("class", "calendar-month-view-grid-row");
 
+		    //the first box in the row is the name of the month
             var day = createXULElement("label");
             day.setAttribute("flex","1");
             var monthName = calGetString("dateFormat", "month." + (m+1) + ".Mmm");
@@ -620,6 +621,8 @@
 
             for (var d=0; d<maxday; d++) {
                var day = createXULElement("calendar-year-day-box");
+               let weekLabel = document.getElementById("week-label")
+					console.log(weekLabel);
                row.appendChild(day);
             }
             this.yeargridrows.appendChild(row);
