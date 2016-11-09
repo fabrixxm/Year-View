@@ -243,14 +243,14 @@
           }
 
           return false;
-        ]]></getter>
+        		]]></getter>
 				<setter><![CDATA[
           if (val)
             this.setAttribute("selected", "true");
           else
             this.removeAttribute("selected");
           return val;
-        ]]></setter>
+				]]></setter>
 			</property>
 
 			<property name="dayitems">
@@ -296,15 +296,15 @@
           while(this.hasChildNodes()) {
               this.removeChild(this.lastChild);
           }
-	  // Reset more
+		  // Reset more
           this.morelabel.setAttribute("class","calendar-year-day-box-more-off");
-	  this.morelabel.setAttribute("tooltiptext","");
+		  this.morelabel.setAttribute("tooltiptext","");
 
           if (!aDate) {
             //throw Components.results.NS_ERROR_NULL_POINTER;
             this.setAttribute("value", "");
             return;
-         }
+          }
           if (this.mDate && this.mDate.compare(aDate) == 0)
             return;
 
@@ -317,7 +317,7 @@
              this.setAttribute("value", aDate.day);
           }*/
          this.setAttribute("value", aDate.day);
-        ]]></body>
+			]]></body>
 			</method>
 
 			<method name="addItem">
@@ -447,30 +447,30 @@
 	  var timezone = this.calendarView ? this.calendarView.mTimezone : calendarDefaultTimezone();
 
 	  var tooltip="";
-          for (var i = 0; i < this.mItemData.length; i++) {
-            var itd = this.mItemData[i];
+	  for (var i = 0; i < this.mItemData.length; i++) {
+		var itd = this.mItemData[i];
 
-            if (!itd.box) {
-              // find what element to insert before
-              var before = null;
-              for (var j = i+1; !before && this.mItemData[j]; j++)
-                before = this.mItemData[j].box;
+		if (!itd.box) {
+		  // find what element to insert before
+		  var before = null;
+		  for (var j = i+1; !before && this.mItemData[j]; j++)
+			before = this.mItemData[j].box;
 
-              var box = createXULElement("calendar-year-day-box-item");
-              box.setAttribute("context", this.getAttribute("item-context") || this.getAttribute("context"));
-              box.setAttribute("calendar-uri", itd.item.calendar.uri.spec);
-              box.setAttribute("calendar-id", itd.item.calendar.id);
+		  var box = createXULElement("calendar-year-day-box-item");
+		  box.setAttribute("context", this.getAttribute("item-context") || this.getAttribute("context"));
+		  box.setAttribute("calendar-uri", itd.item.calendar.uri.spec);
+		  box.setAttribute("calendar-id", itd.item.calendar.id);
 
-              this.insertBefore(box, before);
+		  this.insertBefore(box, before);
 
-              box.calendarView = this.calendarView;
-              box.item = itd.item;
-              box.parentBox = this;
-              box.occurrence = itd.item;
-              itd.box = box;
-            }
-	    tooltip += itd.item.title+"\n";
-          }
+		  box.calendarView = this.calendarView;
+		  box.item = itd.item;
+		  box.parentBox = this;
+		  box.occurrence = itd.item;
+		  itd.box = box;
+		}
+		tooltip += itd.item.title+"\n";
+    }
 	// needs more?
 	if (this.dayitems.clientHeight < (this.mItemData[0].box.clientHeight * this.mItemData.length)){
 		this.morelabel.setAttribute("class","calendar-year-day-box-more-on");
@@ -484,7 +484,7 @@
 				<parameter name="aItem" />
 				<body><![CDATA[
           return cal.moveItem(aItem, this.mDate);
-        ]]></body>
+				]]></body>
 			</method>
 
 		</implementation>
@@ -494,21 +494,21 @@
         event.stopPropagation();
         if (this.mDate)
           this.calendarView.selectedDay = this.mDate;
-      ]]></handler>
+		  ]]></handler>
 			<handler event="dblclick"><![CDATA[
         event.stopPropagation();
         this.calendarView.controller.createNewEvent();
-      ]]></handler>
+		  ]]></handler>
 			<handler event="click" button="0"><![CDATA[
         this.calendarView.setSelectedItems(0, []);
-      ]]></handler>
+		  ]]></handler>
 			<handler event="DOMMouseScroll"><![CDATA[
         if (getParentNodeOrThisByAttribute(event.originalTarget, "anonid", "day-label") == null) {
             if (this.dayitems.scrollHeight > this.dayitems.clientHeight) {
                 event.stopPropagation();
             }
         }
-      ]]></handler>
+		  ]]></handler>
 		</handlers>
 	</binding>
 
@@ -585,8 +585,10 @@
 
             for (var d=0; d<maxday; d++) {
                var day = createXULElement("calendar-year-day-box");
-               let weekLabel = document.getElementById("week-label")
-					console.log(weekLabel);
+               // trying to access week-label...
+               let weekLabel = document.getAnonymousElementByAttribute(day,"anonid","week-label");
+			   console.log(weekLabel);
+			   console.log(day);
                row.appendChild(day);
             }
             this.yeargridrows.appendChild(row);
