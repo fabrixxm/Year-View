@@ -208,12 +208,13 @@
 		extends="chrome://calendar/content/widgets/calendar-widgets.xml#dragndropContainer">
 		<content orient="vertical">
 			<xul:hbox>
-				<xul:label anonid="week-label" align="left" 
-					flex="1" crop="end" mousethrough="always"
+				<xul:label anonid="week-label"  
+					flex="1" crop="end" hidden="true" mousethrough="always"
 					class="calendar-month-day-box-week-label calendar-month-day-box-date-label"
 					xbl:inherits="relation,selected" />
-				<xul:label anonid="day-label" align="right" crop="end"
-					mousethrough="always" class="calendar-month-day-box-date-label"
+				<xul:label anonid="day-label" 
+					flex="1" crop="end" mousethrough="always" 
+					class="calendar-month-day-box-date-label"
 					xbl:inherits="relation,selected,value" />
 			</xul:hbox>
 			<xul:vbox anonid="day-items" class="calendar-year-day-box-items-box"
@@ -942,7 +943,7 @@
 			
             for (var jj = rowdate.weekday; jj < rowdate.endOfMonth.day+rowdate.weekday; jj++) {
               j=jj+1;
-              console.log(jj);
+              //console.log(jj);
               var daybox = row.childNodes[j];
               var daydate = date.clone()
 
@@ -980,6 +981,7 @@
               // WEEK LABEL:
 			  if (this.mShowWeekNumber) { // the user has chosen to display the week number
 				  let weekLabel = document.getAnonymousElementByAttribute(daybox, "anonid", "week-label");
+				  weekLabel.removeAttribute("hidden"); // display it
 				  let weekNumber = cal.getWeekInfoService().getWeekTitle(date);
 				  let weekString = cal.calGetString("calendar", "abbreviationOfWeek", [weekNumber]);
 				  if (currentWeekNumber != weekString){ // ...this is a new week
@@ -1019,6 +1021,23 @@
           */
           this.adjustWeekdayLength();
         ]]></body>
+			</method>
+
+    	    <method name="hideWeekNumbers">
+		    	<body><![CDATA[
+				  let rows = this.yeargridrows.childNodes;
+				  for (let i = 0; i < rows.length; i++) {
+					  let row = rows[i];
+					  rowdate = this.mStartDate.clone();
+					  for (let jj = rowdate.weekday; jj < rowdate.endOfMonth.day+rowdate.weekday; jj++) {
+					      j=jj+1;
+						  let daybox = row.childNodes[j];
+						  let weekLabel = document.getAnonymousElementByAttribute(daybox, "anonid", "week-label");
+						  weekLabel.hidden = true;
+					  }
+				  }
+				]]></body>
+
 			</method>
 
 			<method name="hideDaysOff">
