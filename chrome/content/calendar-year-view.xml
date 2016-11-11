@@ -208,7 +208,7 @@
 		extends="chrome://calendar/content/widgets/calendar-widgets.xml#dragndropContainer">
 		<content orient="vertical">
 			<xul:hbox>
-				<xul:label anonid="week-label" align="left" value="X"
+				<xul:label anonid="week-label" align="left" 
 					flex="1" crop="end" mousethrough="always"
 					class="calendar-month-day-box-week-label calendar-month-day-box-date-label"
 					xbl:inherits="relation,selected" />
@@ -233,6 +233,13 @@
 			<property name="date">
 				<getter>return this.mDate;</getter>
 				<setter>this.setDate(val); return val;</setter>
+			</property>
+			
+		    <!--  week-label implemented -->	
+			<field name="weekLabelField">null</field>
+			<property name="weekLabelProp">
+				<getter>return this.weekLabelField;</getter>
+				<setter>this.setWeekLabel(val); return val;</setter>
 			</property>
 
 			<property name="selected">
@@ -586,13 +593,16 @@
             for (var d=0; d<maxday; d++) {
                var day = createXULElement("calendar-year-day-box");
                // trying to access week-label...
-               let weekLabel = document.getAnonymousElementByAttribute(day,"anonid","week-label");
-			   console.log(weekLabel);
-			   console.log(day);
+               //let weekLabel = document.getElementsByAttribute("anonid","weekAndDay-label");
+			   //console.log(weekLabel.firstChild.getAttribute("week-label");
+			   //console.log(day);
                row.appendChild(day);
             }
             this.yeargridrows.appendChild(row);
          }
+
+        // Set the preference for displaying the week number
+        this.mShowWeekNumber = Preferences.get("calendar.view-minimonth.showWeekNumber", true);
 
       ]]></constructor>
 
@@ -603,6 +613,7 @@
 
 			<field name="mShowDaysOutsideMonth">true</field>
 			<field name="mShowFullMonth">true</field>
+      <field name="mShowWeekNumber">true</field>
 
 			<!-- other methods -->
 			<method name="setAttribute">
@@ -678,6 +689,15 @@
                case "calendar.previousweeks.inview":
                    this.refreshView();
                    break;
+
+              case "calendar.view-minimonth.showWeekNumber":
+                  this.mShowWeekNumber = aSubject.getBoolPref(aPreference);
+                  if (this.mShowWeekNumber) {
+                      this.refreshView();
+                  } else {
+                      this.hideWeekNumbers();
+                  }
+                  break;
 
                default:
                    this.handleCommonPreference(aSubject, aTopic, aPreference);
@@ -917,8 +937,12 @@
             }
 
 
+			// used for week-label: display it only one time in each week:
+			var currentWeekNumber = 0;
+			
             for (var jj = rowdate.weekday; jj < rowdate.endOfMonth.day+rowdate.weekday; jj++) {
               j=jj+1;
+              console.log(jj);
               var daybox = row.childNodes[j];
               var daydate = date.clone()
 
@@ -948,10 +972,21 @@
               }
 
               daybox.setAttribute("class", boxClass);
-
+			  //console.log(daydate);
               daybox.setDate(daydate);
               daybox.showMonthLabel = true;
               daybox.calendarView = this;
+              
+              // WEEK LABEL:
+			  if (this.mShowWeekNumber) { // the user has chosen to display the week number
+				  let weekLabel = document.getAnonymousElementByAttribute(daybox, "anonid", "week-label");
+				  let weekNumber = cal.getWeekInfoService().getWeekTitle(date);
+				  let weekString = cal.calGetString("calendar", "abbreviationOfWeek", [weekNumber]);
+				  if (currentWeekNumber != weekString){ // ...this is a new week
+					  weekLabel.value = weekString; // so we display it
+					  currentWeekNumber = weekString; // actualize the current week number
+					  }
+				  }
 
               //daybox.date = date;
               dateBoxes.push(daybox);
