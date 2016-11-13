@@ -49,42 +49,42 @@
 
 <!DOCTYPE bindings SYSTEM "chrome://global/locale/global.dtd" >
 
-<bindings id="calendar-year-view-bindings" xmlns="http://www.mozilla.org/xbl"
-	xmlns:html="http://www.w3.org/1999/xhtml"
-	xmlns:xul="http://www.mozilla.org/keymaster/gatekeeper/there.is.only.xul"
-	xmlns:svg="http://www.w3.org/2000/svg" xmlns:xbl="http://www.mozilla.org/xbl">
+<bindings id="calendar-year-view-bindings"
+  xmlns="http://www.mozilla.org/xbl"
+  xmlns:html="http://www.w3.org/1999/xhtml"
+  xmlns:xul="http://www.mozilla.org/keymaster/gatekeeper/there.is.only.xul"
+  xmlns:svg="http://www.w3.org/2000/svg"
+  xmlns:xbl="http://www.mozilla.org/xbl">
 
-	<!-- custom calendar-day-label -->
-	<binding id="calendar-year-day-label" extends="xul:box">
-		<content flex="1" pack="center">
-			<xul:label anonid="longWeekdayName" class="calendar-day-label-name"
-				xbl:inherits="selected" />
-			<xul:label anonid="shortWeekdayName" class="calendar-day-label-name"
-				hidden="true" xbl:inherits="selected" />
-		</content>
-		<implementation>
-			<field name="mWeekday">-1</field>
-			<field name="longWeekdayPixels">0</field>
-			<field name="mDate">null</field>
-			<property name="longName" readonly="true"
-				onget="return document.getAnonymousElementByAttribute(this, 'anonid', 'longWeekdayName');" />
-			<property name="shortName" readonly="true"
-				onget="return document.getAnonymousElementByAttribute(this, 'anonid', 'shortWeekdayName');" />
-			<property name="weekDay">
-				<getter>return this.mWeekday;</getter>
-				<setter><![CDATA[
+  <!-- custom calendar-day-label -->
+  <binding id="calendar-year-day-label" extends="xul:box">
+    <content flex="1" pack="center">
+      <xul:label anonid="longWeekdayName" class="calendar-day-label-name" xbl:inherits="selected"/>
+      <xul:label anonid="shortWeekdayName" class="calendar-day-label-name" hidden="true" xbl:inherits="selected"/>
+    </content>
+    <implementation>
+      <field name="mWeekday">-1</field>
+      <field name="longWeekdayPixels">0</field>
+      <field name="mDate">null</field>
+      <property name="longName" readonly="true"
+                onget="return document.getAnonymousElementByAttribute(this, 'anonid', 'longWeekdayName');"/>
+      <property name="shortName" readonly="true"
+                onget="return document.getAnonymousElementByAttribute(this, 'anonid', 'shortWeekdayName');"/>
+      <property name="weekDay">
+        <getter>return this.mWeekday;</getter>
+        <setter><![CDATA[
           this.mWeekday = val % 7;
           this.longName.value = getDateFormatter().dayName(val)[0];
           this.shortName.value = getDateFormatter().shortDayName(val)[0];
           return this.mWeekday;
         ]]></setter>
-			</property>
+      </property>
 
-			<property name="date">
-				<getter><![CDATA[
+      <property name="date">
+        <getter><![CDATA[
           return this.mDate;
         ]]></getter>
-				<setter><![CDATA[
+        <setter><![CDATA[
           this.mDate = val;
           this.shortName.setAttribute("value", getDateFormatter().shortDayName(val.weekday) + " " +
                                                getDateFormatter().formatDateWithoutYear(val));
@@ -92,22 +92,22 @@
                                               getDateFormatter().formatDateWithoutYear(val));
           return val;
         ]]></setter>
-			</property>
+      </property>
 
-			<property name="shortWeekNames">
-				<getter><![CDATA[
+      <property name="shortWeekNames">
+        <getter><![CDATA[
         ]]></getter>
-				<setter><![CDATA[
+        <setter><![CDATA[
           // cache before change, in case we are switching to short
           this.getLongWeekdayPixels();
           setBooleanAttribute(this.longName, "hidden", val);
           setBooleanAttribute(this.shortName, "hidden", !val);
           return val;
         ]]></setter>
-			</property>
+      </property>
 
-			<method name="getLongWeekdayPixels">
-				<body><![CDATA[
+      <method name="getLongWeekdayPixels">
+        <body><![CDATA[
           // Only do this if the long weekdays are visible and we haven't already cached.
           let longNameWidth = this.longName.boxObject.width;
           if (longNameWidth > 0) {
@@ -122,59 +122,72 @@
               return 0;
           }
         ]]></body>
-			</method>
-		</implementation>
-	</binding>
+      </method>
+    </implementation>
+  </binding>
 
 
-	<binding id="calendar-year-day-box-item"
-		extends="chrome://calendar/content/calendar-view-core.xml#calendar-editable-item">
-		<content mousethrough="never" tooltip="itemTooltip">
-			<xul:vbox flex="1">
-				<xul:hbox>
-					<xul:box anonid="event-container" class="calendar-color-box"
-						xbl:inherits="calendar-uri,calendar-id" flex="1">
-						<xul:box class="calendar-event-selection" orient="horizontal"
-							flex="1">
-							<xul:stack anonid="eventbox" class="calendar-event-box-container"
-								xbl:inherits="readonly,flashing,alarm,allday,priority,progress,status,calendar,categories"
-								flex="1">
-								<xul:hbox class="calendar-event-details">
-									<xul:vbox pack="center">
-										<xul:image anonid="item-icon"
-											class="calendar-month-day-box-item-image" xbl:inherits="progress,allday" />
-									</xul:vbox>
-									<xul:label anonid="item-label" class="calendar-month-day-box-item-label"
-										xbl:inherits="context" />
-									<xul:vbox align="left" flex="1" xbl:inherits="context">
-										<xul:label anonid="event-name" crop="end" flex="1"
-											style="margin: 0;" />
-										<xul:textbox anonid="event-name-textbox"
-											class="plain calendar-event-name-textbox" crop="end" hidden="true"
-											wrap="true" />
-										<xul:spacer flex="1" />
-									</xul:vbox>
-									<xul:stack>
-										<xul:calendar-category-box anonid="category-box"
-											xbl:inherits="categories" pack="end" />
-										<xul:hbox anonid="alarm-icons-box" class="alarm-icons-box"
-											align="center" pack="end" xbl:inherits="flashing" />
-									</xul:stack>
-								</xul:hbox>
-								<xul:image anonid="gradient" class="calendar-event-box-gradient"
-									height="1px" mousethrough="always" />
-							</xul:stack>
-						</xul:box>
-					</xul:box>
-				</xul:hbox>
-			</xul:vbox>
-		</content>
-		<implementation>
-			<property name="occurrence">
-				<getter><![CDATA[
+  <binding id="calendar-year-day-box-item" extends="chrome://calendar/content/calendar-view-core.xml#calendar-editable-item">
+    <content mousethrough="never" tooltip="itemTooltip">
+      <xul:vbox flex="1">
+        <xul:hbox>
+          <xul:box anonid="event-container"
+                   class="calendar-color-box"
+                   xbl:inherits="calendar-uri,calendar-id"
+                   flex="1">
+            <xul:box class="calendar-event-selection" orient="horizontal" flex="1">
+              <xul:stack anonid="eventbox"
+                         class="calendar-event-box-container"
+                         xbl:inherits="readonly,flashing,alarm,allday,priority,progress,status,calendar,categories"
+                         flex="1">
+                <xul:hbox class="calendar-event-details">
+                  <xul:vbox pack="center">
+                    <xul:image anonid="item-icon"
+                               class="calendar-month-day-box-item-image"
+                               xbl:inherits="progress,allday"/>
+                  </xul:vbox>
+                  <xul:label anonid="item-label"
+                             class="calendar-month-day-box-item-label"
+                             xbl:inherits="context"/>
+                  <xul:vbox align="left"
+                            flex="1"
+                            xbl:inherits="context">
+                    <xul:label anonid="event-name"
+                               crop="end"
+                               flex="1"
+                               style="margin: 0;"/>
+                    <xul:textbox anonid="event-name-textbox"
+                                 class="plain calendar-event-name-textbox"
+                                 crop="end"
+                                 hidden="true"
+                                 wrap="true"/>
+                    <xul:spacer flex="1"/>
+                  </xul:vbox>
+                  <xul:stack>
+                    <xul:calendar-category-box anonid="category-box" xbl:inherits="categories" pack="end"/>
+                    <xul:hbox anonid="alarm-icons-box"
+                              class="alarm-icons-box"
+                              align="center"
+                              pack="end"
+                              xbl:inherits="flashing"/>
+                  </xul:stack>
+                </xul:hbox>
+                <xul:image anonid="gradient"
+                           class="calendar-event-box-gradient"
+                           height="1px"
+                           mousethrough="always"/>
+              </xul:stack>
+            </xul:box>
+          </xul:box>
+        </xul:hbox>
+      </xul:vbox>
+    </content>
+    <implementation>
+      <property name="occurrence">
+        <getter><![CDATA[
             return this.mOccurrence;
         ]]></getter>
-				<setter><![CDATA[
+        <setter><![CDATA[
           ASSERT(!this.mOccurrence, "Code changes needed to set the occurrence twice", true);
           this.mOccurrence = val;
           let icon = document.getAnonymousElementByAttribute(this, "anonid", "item-icon");
@@ -212,19 +225,18 @@
           } else if (isToDo(val)) {
             icon.setAttribute("type", "todo");
           }
-
           this.setEditableLabel();
           this.setCSSClasses();
           return val;
         ]]></setter>
-			</property>
-			<property name="parentBox" onget="return this.mParentBox;"
-				onset="this.mParentBox = val;" />
-		</implementation>
-	</binding>
+      </property>
+      <property name="parentBox"
+                onget="return this.mParentBox;"
+                onset="this.mParentBox = val;"/>
+    </implementation>
+  </binding>
 
-	<binding id="calendar-year-day-box"
-		extends="chrome://calendar/content/widgets/calendar-widgets.xml#dragndropContainer">
+  <binding id="calendar-year-day-box" extends="chrome://calendar/content/widgets/calendar-widgets.xml#dragndropContainer">
 		<content orient="vertical">
 			<xul:hbox>
 				<xul:label anonid="week-label"  
@@ -244,54 +256,50 @@
 				value=" " />
 		</content>
 
-		<implementation>
-			<field name="mDate">null</field>
-			<!-- mItemData will always be kept sorted in display order -->
-			<field name="mItemData">[]</field>
-			<field name="mShowMonthLabel">false</field>
+    <implementation>
+      <field name="mDate">null</field>
+      <!-- mItemData will always be kept sorted in display order -->
+      <field name="mItemData">[]</field>
+      <field name="mShowMonthLabel">false</field>
 
-			<property name="date">
-				<getter>return this.mDate;</getter>
-				<setter>this.setDate(val); return val;</setter>
-			</property>
+      <property name="date">
+        <getter>return this.mDate;</getter>
+        <setter>this.setDate(val); return val;</setter>
+      </property>
 
-			<property name="selected">
-				<getter><![CDATA[
+      <property name="selected">
+        <getter><![CDATA[
           var sel = this.getAttribute("selected");
           if (sel && sel == "true") {
             return true;
           }
-
           return false;
-        		]]></getter>
-				<setter><![CDATA[
+        ]]></getter>
+        <setter><![CDATA[
           if (val)
             this.setAttribute("selected", "true");
           else
             this.removeAttribute("selected");
           return val;
-				]]></setter>
-			</property>
+        ]]></setter>
+      </property>
 
-			<property name="dayitems">
-				<getter>return document.getAnonymousElementByAttribute(this,
-					"anonid", "day-items");</getter>
-			</property>
-			<property name="morelabel">
-				<getter>return document.getAnonymousElementByAttribute(this,
-					"anonid", "day-more");</getter>
-			</property>
+      <property name="dayitems">
+        <getter>return document.getAnonymousElementByAttribute(this, "anonid", "day-items");</getter>
+      </property>
+      <property name="morelabel">
+	<getter>return document.getAnonymousElementByAttribute(this, "anonid", "day-more");</getter>
+      </property>
 
-			<property name="showMonthLabel">
-				<getter><![CDATA[
+      <property name="showMonthLabel">
+        <getter><![CDATA[
           return this.mShowMonthLabel;
         ]]></getter>
-				<setter><![CDATA[
+        <setter><![CDATA[
           if (this.mShowMonthLabel == val) {
             return val;
           }
           this.mShowMonthLabel = val;
-
           if (!this.mDate) {
             return val;
           }
@@ -304,32 +312,28 @@
           this.setAttribute("value", this.mDate.day);
           return val;
         ]]></setter>
-			</property>
+      </property>
 
 
-			<method name="setDate">
-				<parameter name="aDate" />
-				<body><![CDATA[
-
+      <method name="setDate">
+        <parameter name="aDate"/>
+        <body><![CDATA[
           // Remove all the old events
           this.mItemData = new Array();
           while(this.hasChildNodes()) {
               this.removeChild(this.lastChild);
           }
-		  // Reset more
+	  // Reset more
           this.morelabel.setAttribute("class","calendar-year-day-box-more-off");
-		  this.morelabel.setAttribute("tooltiptext","");
-
+	  this.morelabel.setAttribute("tooltiptext","");
           if (!aDate) {
             //throw Components.results.NS_ERROR_NULL_POINTER;
             this.setAttribute("value", "");
             return;
-          }
+         }
           if (this.mDate && this.mDate.compare(aDate) == 0)
             return;
-
           this.mDate = aDate;
-
          /*if (this.mShowMonthLabel) {
              var monthName = calGetString("dateFormat", "month." + (aDate.month+1) + ".Mmm");
              this.setAttribute("value", aDate.day + " " + monthName);
@@ -337,16 +341,15 @@
              this.setAttribute("value", aDate.day);
           }*/
          this.setAttribute("value", aDate.day);
-			]]></body>
-			</method>
+        ]]></body>
+      </method>
 
-			<method name="addItem">
-				<parameter name="aItem" />
-				<body><![CDATA[
+      <method name="addItem">
+        <parameter name="aItem"/>
+        <body><![CDATA[
           // skip item if hidden in this view
           if (aItem.calendar.getProperty('yearview.hide')===true)
             return;
-
           // XXX This scales badly for adding lots of items: O(N^2)
           for each (ed in this.mItemData) {
             if (aItem.hashId == ed.item.hashId)
@@ -355,53 +358,41 @@
               break;
             }
           }
-
           function dayboxItemComparator(a, b) {
             var aIsEvent = isEvent(a.item);
             var aIsTodo = isToDo(a.item);
-
             var bIsEvent = isEvent(b.item);
             var bIsTodo = isToDo(b.item);
-
             if ((!aIsEvent && !aIsTodo) || (!bIsEvent && !bIsTodo)) {
               // XXX ????
               dump ("Don't know how to sort these two events: " + a.item + " " + b.item + "\n");
               return 0;
             }
-
             // sort todos before events
             if (aIsTodo && bIsEvent) return -1;
             if (aIsEvent && bIsTodo) return 1;
-
             // XXX how do I sort todos?
             if (aIsTodo && bIsTodo) {
               return 0;
             }
-
             if (aIsEvent && bIsEvent) {
               // sort all day events before events with a duration
               if (a.item.startDate.isDate && !b.item.startDate.isDate) return -1;
               if (!a.item.startDate.isDate && b.item.startDate.isDate) return 1;
-
               var cmp;
-
               cmp = a.item.startDate.compare(b.item.startDate);
               if (cmp != 0)
                 return cmp;
-
               cmp = a.item.endDate.compare(b.item.endDate);
               if (cmp != 0)
                 return cmp;
-
               if (a.item.title < b.item.title)
                 return -1;
               if (a.item.title > b.item.title)
                 return 1;
             }
-
             return 0;
           }
-
           // Insert the new item block (while keeping the array sorted),
           // and then relayout. Use a binary search insertation because the
           // array is already sorted. Array.Sort would use quicksort which is
@@ -409,35 +400,34 @@
           binaryInsert(this.mItemData, { item: aItem }, dayboxItemComparator, false);
           this.relayout();
         ]]></body>
-			</method>
+      </method>
 
-			<method name="selectItem">
-				<parameter name="aItem" />
-				<body><![CDATA[
+      <method name="selectItem">
+        <parameter name="aItem"/>
+        <body><![CDATA[
           for each (var itd in this.mItemData) {
               if (aItem && (itd.item.hashId == aItem.hashId)) {
                   itd.box.selected = true;
               }
           }
         ]]></body>
-			</method>
+      </method>
 
-			<method name="unselectItem">
-				<parameter name="aItem" />
-				<body><![CDATA[
+      <method name="unselectItem">
+        <parameter name="aItem"/>
+        <body><![CDATA[
           for each (var itd in this.mItemData) {
               if (aItem && (itd.item.hashId == aItem.hashId)) {
                   itd.box.selected = false;
               }
           }
         ]]></body>
-			</method>
+      </method>
 
-			<method name="deleteItem">
-				<parameter name="aItem" />
-				<body><![CDATA[
+      <method name="deleteItem">
+        <parameter name="aItem"/>
+        <body><![CDATA[
           var deleted = [];
-
           var origLen = this.mItemData.length;
           this.mItemData = this.mItemData.filter(
             function(itd) {
@@ -448,7 +438,6 @@
               }
               return true;
             });
-
           if (deleted.length > 0) {
             for each (itd in deleted) {
               if (itd.box)
@@ -458,39 +447,34 @@
             //this.relayout();
           }
         ]]></body>
-			</method>
+      </method>
 
-			<method name="relayout">
-				<body><![CDATA[
+      <method name="relayout">
+        <body><![CDATA[
 	  var df = Components.classes["@mozilla.org/calendar/datetime-formatter;1"].
                        getService(Components.interfaces.calIDateTimeFormatter);
 	  var timezone = this.calendarView ? this.calendarView.mTimezone : calendarDefaultTimezone();
-
 	  var tooltip="";
-	  for (var i = 0; i < this.mItemData.length; i++) {
-		var itd = this.mItemData[i];
-
-		if (!itd.box) {
-		  // find what element to insert before
-		  var before = null;
-		  for (var j = i+1; !before && this.mItemData[j]; j++)
-			before = this.mItemData[j].box;
-
-		  var box = createXULElement("calendar-year-day-box-item");
-		  box.setAttribute("context", this.getAttribute("item-context") || this.getAttribute("context"));
-		  box.setAttribute("calendar-uri", itd.item.calendar.uri.spec);
-		  box.setAttribute("calendar-id", itd.item.calendar.id);
-
-		  this.insertBefore(box, before);
-
-		  box.calendarView = this.calendarView;
-		  box.item = itd.item;
-		  box.parentBox = this;
-		  box.occurrence = itd.item;
-		  itd.box = box;
-		}
-		tooltip += itd.item.title+"\n";
-    }
+          for (var i = 0; i < this.mItemData.length; i++) {
+            var itd = this.mItemData[i];
+            if (!itd.box) {
+              // find what element to insert before
+              var before = null;
+              for (var j = i+1; !before && this.mItemData[j]; j++)
+                before = this.mItemData[j].box;
+              var box = createXULElement("calendar-year-day-box-item");
+              box.setAttribute("context", this.getAttribute("item-context") || this.getAttribute("context"));
+              box.setAttribute("calendar-uri", itd.item.calendar.uri.spec);
+              box.setAttribute("calendar-id", itd.item.calendar.id);
+              this.insertBefore(box, before);
+              box.calendarView = this.calendarView;
+              box.item = itd.item;
+              box.parentBox = this;
+              box.occurrence = itd.item;
+              itd.box = box;
+            }
+	    tooltip += itd.item.title+"\n";
+          }
 	// needs more?
 	if (this.dayitems.clientHeight < (this.mItemData[0].box.clientHeight * this.mItemData.length)){
 		this.morelabel.setAttribute("class","calendar-year-day-box-more-on");
@@ -499,62 +483,62 @@
 		this.morelabel.setAttribute("class","calendar-year-day-box-more-off");
 	}
         ]]></body>
-			</method>
-			<method name="onDropItem">
-				<parameter name="aItem" />
-				<body><![CDATA[
+      </method>
+      <method name="onDropItem">
+        <parameter name="aItem"/>
+        <body><![CDATA[
           return cal.moveItem(aItem, this.mDate);
-				]]></body>
-			</method>
+        ]]></body>
+      </method>
 
-		</implementation>
+    </implementation>
 
-		<handlers>
-			<handler event="mousedown"><![CDATA[
+    <handlers>
+      <handler event="mousedown"><![CDATA[
         event.stopPropagation();
         if (this.mDate)
           this.calendarView.selectedDay = this.mDate;
-		  ]]></handler>
-			<handler event="dblclick"><![CDATA[
+      ]]></handler>
+      <handler event="dblclick"><![CDATA[
         event.stopPropagation();
         this.calendarView.controller.createNewEvent();
-		  ]]></handler>
-			<handler event="click" button="0"><![CDATA[
+      ]]></handler>
+      <handler event="click" button="0"><![CDATA[
         this.calendarView.setSelectedItems(0, []);
-		  ]]></handler>
-			<handler event="DOMMouseScroll"><![CDATA[
+      ]]></handler>
+      <handler event="DOMMouseScroll"><![CDATA[
         if (getParentNodeOrThisByAttribute(event.originalTarget, "anonid", "day-label") == null) {
             if (this.dayitems.scrollHeight > this.dayitems.clientHeight) {
                 event.stopPropagation();
             }
         }
-		  ]]></handler>
-		</handlers>
-	</binding>
+      ]]></handler>
+    </handlers>
+  </binding>
 
-	<binding id="calendar-year-base-view"
-		extends="chrome://calendar/content/calendar-base-view.xml#calendar-base-view">
-		<content style="overflow: auto" flex="1" xbl:inherits="context,item-context">
-			<xul:vbox anonid="mainbox" flex="1">
-				<xul:hbox class="labeldaybox-container" anonid="labeldaybox"
-					chromedir="&locale.dir;" equalsize="always" />
+  <binding id="calendar-year-base-view" extends="chrome://calendar/content/calendar-base-view.xml#calendar-base-view">
+    <content style="overflow: auto" flex="1" xbl:inherits="context,item-context">
+      <xul:vbox anonid="mainbox" flex="1">
+        <xul:hbox class="labeldaybox-container"
+                  anonid="labeldaybox"
+                  chromedir="&locale.dir;"
+                  equalsize="always" />
 
-				<xul:grid anonid="yeargrid" flex="1">
-					<xul:columns anonid="yeargridcolumns" equalsize="always" />
-					<xul:rows anonid="yeargridrows" equalsize="always" />
-				</xul:grid>
-			</xul:vbox>
+        <xul:grid anonid="yeargrid" flex="1">
+          <xul:columns anonid="yeargridcolumns" equalsize="always" />
+          <xul:rows anonid="yeargridrows" equalsize="always" />
+        </xul:grid>
+      </xul:vbox>
 
 
-		</content>
+    </content>
 
-		<implementation implements="calICalendarView">
+    <implementation implements="calICalendarView">
 
-			<!-- constructor -->
-			<constructor><![CDATA[
+      <!-- constructor -->
+      <constructor><![CDATA[
         Components.utils.import("resource://gre/modules/Preferences.jsm");
         Components.utils.import("resource://calendar/modules/calViewUtils.jsm");
-
          // Set the preference for the default start of the week
          this.weekStartOffset = Preferences.get("calendar.week.start", 0);
          /*
@@ -564,14 +548,11 @@
             hdr.weekDay = (i + this.mWeekStartOffset) % 7;
             hdr.shortWeekNames = false;
           }*/
-
          var maxday=37;
-
          // header "month name"
          var hdr = createXULElement("calendar-day-label");
          this.labeldaybox.appendChild(hdr);
          hdr.shortWeekNames = true;
-
          // week day name heads
          for (var i=0; i<maxday; i++){
             var hdr = createXULElement("calendar-year-day-label");
@@ -579,7 +560,6 @@
             hdr.weekDay = i % 7;
             hdr.shortWeekNames = true;
          }
-
          /* columns */
          yeargridcolumns =  document.getAnonymousElementByAttribute(this, "anonid", "yeargridcolumns");
          for (var d=0; d<maxday+1; d++) {
@@ -588,116 +568,109 @@
             col.setAttribute("class", "calendar-month-view-grid-column");
             yeargridcolumns.appendChild(col);
          }
-
          //yeargridrows =  document.getAnonymousElementByAttribute(this, "anonid", "yeargridrows");
          /* righe e giorni */
          for (var m=0; m<12; m++) {
             var row = createXULElement("row");
             row.setAttribute("flex","1");
             row.setAttribute("class", "calendar-month-view-grid-row");
-
             var day = createXULElement("label");
             day.setAttribute("flex","1");
             var monthName = calGetString("dateFormat", "month." + (m+1) + ".Mmm");
             day.setAttribute("value",monthName);
             row.appendChild(day);
-
             for (var d=0; d<maxday; d++) {
                var day = createXULElement("calendar-year-day-box");
                row.appendChild(day);
             }
             this.yeargridrows.appendChild(row);
          }
-
+         
+         
         // Set the preference for displaying the week number
         this.mShowWeekNumber = Preferences.get("calendar.view-minimonth.showWeekNumber", true);
 
       ]]></constructor>
 
-			<!-- fields -->
+      <!-- fields -->
 
-			<field name="mDateBoxes">null</field>
-			<field name="mSelectedDayBox">null</field>
+      <field name="mDateBoxes">null</field>
+      <field name="mSelectedDayBox">null</field>
 
-			<field name="mShowDaysOutsideMonth">true</field>
-			<field name="mShowFullMonth">true</field>
-      <field name="mShowWeekNumber">true</field>
+      <field name="mShowDaysOutsideMonth">true</field>
+      <field name="mShowFullMonth">true</field>
 
-			<!-- other methods -->
-			<method name="setAttribute">
-				<parameter name="aAttr" />
-				<parameter name="aVal" />
-				<body><![CDATA[
+      <!-- other methods -->
+      <method name="setAttribute">
+        <parameter name="aAttr"/>
+        <parameter name="aVal"/>
+        <body><![CDATA[
           var needsrelayout = false;
           if (aAttr == "context" || aAttr == "item-context")
               needsrelayout = true;
-
           var ret = XULElement.prototype.setAttribute.call (this, aAttr, aVal);
-
           if (needsrelayout)
               this.relayout();
-
           return ret;
         ]]></body>
-			</method>
+      </method>
 
-			<!-- calICalendarView -->
+      <!-- calICalendarView -->
 
-			<property name="supportsDisjointDates" readonly="true"
-				onget="return false;" />
-			<property name="hasDisjointDates" readonly="true" onget="return false;" />
+      <property name="supportsDisjointDates" readonly="true"
+                onget="return false;"/>
+      <property name="hasDisjointDates" readonly="true"
+                onget="return false;"/>
 
-			<property name="startDate" readonly="true" onget="return this.mStartDate" />
+      <property name="startDate" readonly="true"
+                onget="return this.mStartDate"/>
 
-			<property name="endDate" readonly="true" onget="return this.mEndDate" />
+      <property name="endDate" readonly="true"
+                onget="return this.mEndDate"/>
 
-			<property name="showFullMonth">
-				<getter><![CDATA[
+      <property name="showFullMonth">
+        <getter><![CDATA[
           return this.mShowFullMonth;
         ]]></getter>
-				<setter><![CDATA[
+        <setter><![CDATA[
           this.mShowFullMonth = val;
           return val;
         ]]></setter>
-			</property>
+      </property>
 
-			<!-- this property may be overridden by the descendent classes if neeeded -->
-			<property name="weeksInView">
-				<getter><![CDATA[
+      <!-- this property may be overridden by the
+          descendent classes if neeeded  -->
+      <property name="weeksInView">
+        <getter><![CDATA[
             return 0;
         ]]></getter>
-				<setter><![CDATA[
+        <setter><![CDATA[
             return val;
         ]]></setter>
-			</property>
+      </property>
 
-			<method name="handlePreference">
-				<parameter name="aSubject" />
-				<parameter name="aTopic" />
-				<parameter name="aPreference" />
-				<body><![CDATA[
+      <method name="handlePreference">
+        <parameter name="aSubject"/>
+        <parameter name="aTopic"/>
+        <parameter name="aPreference"/>
+        <body><![CDATA[
            aSubject.QueryInterface(Components.interfaces.nsIPrefBranch2);
-
            switch (aPreference) {
                case "calendar.previousweeks.inview":
                    this.updateDaysOffPrefs();
                    this.refreshView();
                    break;
-
                case "calendar.week.start":
                    this.weekStartOffset = aSubject.getIntPref(aPreference);
                    // Refresh the view so the settings take effect
                    this.refreshView();
                    break;
-
                case "calendar.weeks.inview":
                    this.weeksInView = aSubject.getIntPref(aPreference);
                    break;
-
                case "calendar.previousweeks.inview":
                    this.refreshView();
                    break;
-
               case "calendar.view-minimonth.showWeekNumber":
                   this.mShowWeekNumber = aSubject.getBoolPref(aPreference);
                   if (this.mShowWeekNumber) {
@@ -706,28 +679,27 @@
                       this.hideWeekNumbers();
                   }
                   break;
-
                default:
                    this.handleCommonPreference(aSubject, aTopic, aPreference);
                    break;
            }
            return;
         ]]></body>
-			</method>
+      </method>
 
-			<method name="getSelectedItems">
-				<parameter name="aCount" />
-				<body><![CDATA[
+      <method name="getSelectedItems">
+        <parameter name="aCount"/>
+        <body><![CDATA[
           aCount.value = this.mSelectedItems.length;
           return this.mSelectedItems;
         ]]></body>
-			</method>
+      </method>
 
-			<method name="setSelectedItems">
-				<parameter name="aCount" />
-				<parameter name="aItems" />
-				<parameter name="aSuppressEvent" />
-				<body><![CDATA[
+      <method name="setSelectedItems">
+        <parameter name="aCount"/>
+        <parameter name="aItems"/>
+        <parameter name="aSuppressEvent"/>
+        <body><![CDATA[
           if (this.mSelectedItems.length) {
               for each (var item in this.mSelectedItems) {
                   let oldboxes = this.findDayBoxesForItem(item);
@@ -736,9 +708,7 @@
                   }
               }
           }
-
           this.mSelectedItems = aItems || [];
-
           if (this.mSelectedItems.length) {
               for each (var item in this.mSelectedItems) {
                   let newboxes = this.findDayBoxesForItem(item);
@@ -747,29 +717,26 @@
                   }
               }
           }
-
           if (!aSuppressEvent) {
               this.fireEvent("itemselect", this.mSelectedItems);
           }
         ]]></body>
-			</method>
+      </method>
 
-			<method name="centerSelectedItems">
-				<body>
-				</body>
-			</method>
+      <method name="centerSelectedItems">
+        <body>
+        </body>
+      </method>
 
-			<property name="selectedDay">
-				<getter><![CDATA[
+      <property name="selectedDay">
+        <getter><![CDATA[
           if (this.mSelectedDayBox)
             return this.mSelectedDayBox.date.clone();
-
           return null;
         ]]></getter>
-				<setter><![CDATA[
+        <setter><![CDATA[
           if (this.mSelectedDayBox)
             this.mSelectedDayBox.selected = false;
-
           var realVal = val;
           if (!realVal.isDate) {
             realVal = val.clone();
@@ -783,11 +750,11 @@
           this.fireEvent("dayselect", realVal);
           return val;
         ]]></setter>
-			</property>
+      </property>
 
-			<method name="showDate">
-				<parameter name="aDate" />
-				<body><![CDATA[
+      <method name="showDate">
+        <parameter name="aDate"/>
+        <body><![CDATA[
             d1=aDate.clone();
             d1.day=1;
             d1.month=0;
@@ -797,19 +764,19 @@
             this.setDateRange(d1, d2);
             this.selectedDay = aDate;
         ]]></body>
-			</method>
+      </method>
 
-			<method name="onResize">
-				<parameter name="aBinding" />
-				<body><![CDATA[
+      <method name="onResize">
+      <parameter name="aBinding"/>
+        <body><![CDATA[
           aBinding.adjustWeekdayLength();
         ]]></body>
-			</method>
+      </method>
 
-			<method name="setDateRange">
-				<parameter name="aStartDate" />
-				<parameter name="aEndDate" />
-				<body><![CDATA[
+      <method name="setDateRange">
+        <parameter name="aStartDate"/>
+        <parameter name="aEndDate"/>
+        <body><![CDATA[
          aStartDate.isDate=true;
          aEndDate.isDate=true;
          this.rangeStartDate = aStartDate;
@@ -817,39 +784,36 @@
          this.mStartDate = aStartDate; //getWeekInfoService().getStartOfWeek(aStartDate.getInTimezone(this.mTimezone))
          this.mEndDate = aEndDate; //getWeekInfoService().getEndOfWeek(aEndDate.getInTimezone(this.mTimezone));
          this.refresh();
-
          // Update the navigation bar.
          cal.navigationBar.setDateRange(aStartDate, aEndDate);
         ]]></body>
-			</method>
-			<method name="mylog">
-				<parameter name="aMessage" />
-				<body><![CDATA[
+      </method>
+      <method name="mylog">
+         <parameter name="aMessage"/>
+         <body><![CDATA[
             var consoleService = Components.classes["@mozilla.org/consoleservice;1"]
                                  .getService(Components.interfaces.nsIConsoleService);
             consoleService.logStringMessage(aMessage);
          ]]></body>
-			</method>
-			<method name="setDateList">
-				<parameter name="aCount" />
-				<parameter name="aDates" />
-				<body><![CDATA[
+      </method>
+      <method name="setDateList">
+        <parameter name="aCount"/>
+        <parameter name="aDates"/>
+        <body><![CDATA[
            throw Components.results.NS_ERROR_NOT_IMPLEMENTED;
         ]]></body>
-			</method>
+      </method>
 
-			<method name="getDateList">
-				<parameter name="aCount" />
-				<body><![CDATA[
+      <method name="getDateList">
+        <parameter name="aCount"/>
+        <body><![CDATA[
           if (!this.mStartDate || !this.mEndDate) {
             aCount.value = 0;
             return [];
           }
-
           let results = [];
           let curDate = this.mStartDate.clone();
           curDate.isDate = true;
-
           while (curDate.compare(this.mEndDate) <= 0) {
             results.push(curDate.clone());
             curDate.day += 1;
@@ -857,54 +821,50 @@
           aCount.value = results.length;
           return results;
         ]]></body>
-			</method>
+      </method>
 
-			<!-- public properties and methods -->
+      <!-- public properties and methods -->
 
-			<!-- whether to show days outside of the current month -->
-			<property name="showDaysOutsideMonth">
-				<getter><![CDATA[
+      <!-- whether to show days outside of the current month -->
+      <property name="showDaysOutsideMonth">
+        <getter><![CDATA[
           return this.mShowDaysOutsideMonth;
         ]]></getter>
-				<setter><![CDATA[
+        <setter><![CDATA[
           if (this.mShowDaysOutsideMonth != val) {
             this.mShowDaysOutsideMonth = val;
             this.refresh();
           }
           return val;
         ]]></setter>
-			</property>
+      </property>
 
-			<!-- private properties and methods -->
+      <!-- private properties and methods -->
 
-			<property name="yeargrid" readonly="true"
-				onget="return document.getAnonymousElementByAttribute(this, 'anonid', 'yeargrid');" />
+      <property name="yeargrid" readonly="true"
+                onget="return document.getAnonymousElementByAttribute(this, 'anonid', 'yeargrid');"/>
 
-			<property name="yeargridrows" readonly="true"
-				onget="return document.getAnonymousElementByAttribute(this, 'anonid', 'yeargridrows');" />
+      <property name="yeargridrows" readonly="true"
+                onget="return document.getAnonymousElementByAttribute(this, 'anonid', 'yeargridrows');"/>
 
-			<method name="relayout">
-				<body><![CDATA[
+      <method name="relayout">
+        <body><![CDATA[
          // Adjust headers based on the starting day of the week, if necessary
          /*if (this.labeldaybox.firstChild.weekDay != this.weekStartOffset) {
              for (let i = 0; i < this.labeldaybox.childNodes.length; i++) {
                  this.labeldaybox.childNodes[i].weekDay = (i + this.weekStartOffset) % 7;
              }
          }*/
-
           if (this.mSelectedItems.length) {
             this.mSelectedItems = [];
           }
-
           // Clear out the old selection, since it won't be valid after relayout
           if (this.mSelectedDayBox) {
             this.mSelectedDayBox.selected = false;
           }
-
           if (!this.mStartDate || !this.mEndDate) {
             throw Components.results.NS_ERROR_FAILURE;
           }
-
           // Days that are not in the main month on display are displayed with
           // a gray background.  Unless the month actually starts on a Sunday,
           // this means that mStartDate.month is 1 month less than the main month
@@ -913,37 +873,27 @@
             mainMonth++;
             mainMonth = mainMonth % 12;
           }*/
-
           var dateBoxes = [];
           var today = this.today();
-
           // This gets set to true, telling us to collapse the rest of the rows
           var finished = false;
           var dateList = this.getDateList({})
-
           var rows = this.yeargridrows.childNodes;
-
-
-
           // Iterate through each monthgridrow and set up the day-boxes that
           // are its child nodes.  Remember, childNodes is not a normal array,
           // so don't use the in operator if you don't want extra properties
           // coming out.
           for (var i = 0; i < rows.length; i++) {
             var row = rows[i];
-
             rowdate = this.mStartDate.clone()
             rowdate.month = i;
             var date = rowdate.clone()
-
-
             for (var j = 1; j < row.childNodes.length; j++){
               row.childNodes[j].setAttribute("class","calendar-month-day-box-other-month");
               row.childNodes[j].setAttribute("relation","");
               row.childNodes[j].showMonthLabel = false;
               row.childNodes[j].setDate(null);
-
-
+              
 			  let daybox_otherMonth = row.childNodes[j];
 			  daybox_class = daybox_otherMonth.getAttribute("class");
 			  let dayLabel_otherMonth = document.getAnonymousElementByAttribute(daybox_otherMonth, "anonid", "day-label");
@@ -952,27 +902,22 @@
 				  }
             }
 
-
 			// used for week-label: display it only one time in each week:
 			var currentWeekNumber = 0;
-			
+
             for (var jj = rowdate.weekday; jj < rowdate.endOfMonth.day+rowdate.weekday; jj++) {
               j=jj+1;
               var daybox = row.childNodes[j];
               var daydate = date.clone()
-
               daybox.setAttribute("context", this.getAttribute("context"));
               daybox.setAttribute("item-context", this.getAttribute("item-context") || this.getAttribute("context"));
-
               // Set the box-class depending on if this box displays a day in
               // the month being currently shown or not.
               var boxClass = "calendar-month-day-box-current-month";
-
               function matchesDayOff(dayOffNum) { return dayOffNum == date.weekday; }
               if (this.mDaysOffArray.some(matchesDayOff)) {
                 boxClass = "calendar-month-day-box-day-off " + boxClass;
               }
-
               // Set up date relations
               switch (date.compare(today)) {
                   case -1:
@@ -985,7 +930,6 @@
                       daybox.setAttribute("relation", "future");
                       break;
               }
-
               daybox.setAttribute("class", boxClass);
               daybox.setDate(daydate);
               daybox.showMonthLabel = true;
@@ -1009,7 +953,6 @@
 
               //daybox.date = date;
               dateBoxes.push(daybox);
-
               /*
               var boxdata = {
                 date: daydate,
@@ -1017,17 +960,12 @@
                 box: daybox
               };
               dateBoxes.push(boxdata);*/
-
               date.day += 1;
-
             }
           }
-
-
           // Store these, so that we can access them later
           this.mDateBoxes = dateBoxes;
           this.hideDaysOff();
-
           // Highlight today, if it's in the range of the view
           //TODO: compare con dateStart e dateEnd
           /*
@@ -1038,7 +976,7 @@
           */
           this.adjustWeekdayLength();
         ]]></body>
-			</method>
+      </method>
 
     	    <method name="hideWeekNumbers">
 		    	<body><![CDATA[
@@ -1057,11 +995,10 @@
 					  }
 				  }
 				]]></body>
-
 			</method>
 
-			<method name="hideDaysOff">
-				<body><![CDATA[
+      <method name="hideDaysOff">
+        <body><![CDATA[
           var columns = document.getAnonymousElementByAttribute(this, "anonid", "yeargridcolumns").childNodes;
           let headerkids = document.getAnonymousElementByAttribute(this, "anonid", "labeldaybox").childNodes;
           for (var i in columns) {
@@ -1071,26 +1008,25 @@
             headerkids[i].collapsed = dayOff && !this.mDisplayDaysOff;
           }
         ]]></body>
-			</method>
+      </method>
 
-			<method name="findDayBoxForDate">
-				<parameter name="aDate" />
-				<body><![CDATA[
+      <method name="findDayBoxForDate">
+        <parameter name="aDate"/>
+        <body><![CDATA[
           for each (box in this.mDateBoxes) {
             if (box.mDate!=null && box.mDate.compare(aDate) == 0)
               return box;
           }
           return null;
         ]]></body>
-			</method>
+      </method>
 
-			<method name="findDayBoxesForItem">
-				<parameter name="aItem" />
-				<body><![CDATA[
+      <method name="findDayBoxesForItem">
+        <parameter name="aItem"/>
+        <body><![CDATA[
           var targetDate = null;
           var finishDate = null;
           var boxes = new Array();
-
           // All our boxes are in default tz, so we need these times in them too.
           if (isEvent(aItem)) {
             targetDate = aItem.startDate.getInTimezone(this.mTimezone);
@@ -1103,10 +1039,8 @@
               }
             }
           }
-
           if (!targetDate)
             return boxes;
-
           if (!finishDate) {
             let maybeBox = this.findDayBoxForDate(targetDate);
             if (maybeBox) {
@@ -1114,14 +1048,12 @@
             }
             return boxes;
           }
-
           if (!targetDate.isDate) {
             // Reset the time to 00:00, so that we really get all the boxes
             targetDate.hour = 0;
             targetDate.minute = 0;
             targetDate.second = 0;
           }
-
           if (targetDate.compare(finishDate) == 0) {
               // Zero length events are silly, but we have to handle them
               let box = this.findDayBoxForDate(targetDate);
@@ -1129,64 +1061,55 @@
                   boxes.push(box);
               }
           }
-
           while (targetDate.compare(finishDate) == -1) {
             let box = this.findDayBoxForDate(targetDate);
-
             // This might not exist, if the event spans the view start or end
             if (box) {
                 boxes.push(box);
             }
             targetDate.day += 1;
           }
-
           return boxes;
 	]]></body>
-			</method>
+      </method>
 
-			<method name="doAddItem">
-				<parameter name="aItem" />
-				<body><![CDATA[
+      <method name="doAddItem">
+        <parameter name="aItem"/>
+        <body><![CDATA[
           let boxes = this.findDayBoxesForItem(aItem);
-
           if (!boxes.length)
             return;
-
           for each (box in boxes) {
             box.addItem(aItem);
           }
         ]]></body>
-			</method>
+      </method>
 
-			<method name="doDeleteItem">
-				<parameter name="aItem" />
-				<body><![CDATA[
+      <method name="doDeleteItem">
+        <parameter name="aItem"/>
+        <body><![CDATA[
           let boxes = this.findDayBoxesForItem(aItem);
-
           if (!boxes.length)
             return;
-
           function isNotItem(a) {
               return (a.hashId != aItem.hashId);
           }
           var oldLength = this.mSelectedItems.length;
           this.mSelectedItems = this.mSelectedItems.filter(isNotItem);
-
           for each (box in boxes) {
             box.deleteItem(aItem);
           }
-
           // If a deleted event was selected, we need to announce that the
           // selection changed.
           if (oldLength != this.mSelectedItems.length) {
               this.fireEvent("itemselect", this.mSelectedItems);
           }
         ]]></body>
-			</method>
+      </method>
 
-			<method name="deleteItemsFromCalendar">
-				<parameter name="aCalendar" />
-				<body><![CDATA[
+      <method name="deleteItemsFromCalendar">
+        <parameter name="aCalendar"/>
+        <body><![CDATA[
           let deleteHash = {};
           for each (let box in this.mDateBoxes) {
             let boxItemData = Array.slice(box.mItemData);
@@ -1199,20 +1122,18 @@
             }
           }
         ]]></body>
-			</method>
+      </method>
 
-			<method name="flashAlarm">
-				<parameter name="aAlarmItem" />
-				<parameter name="aStop" />
-				<body><![CDATA[
+      <method name="flashAlarm">
+        <parameter name="aAlarmItem"/>
+        <parameter name="aStop"/>
+        <body><![CDATA[
           var showIndicator = Preferences.get("calendar.alarms.indicator.show", true);
           var totaltime = Preferences.get("calendar.alarms.indicator.totaltime", 3600);
-
           if (!aStop && (!showIndicator || totaltime < 1)) {
             // No need to animate if the indicator should not be shown.
             return;
           }
-
           // Make sure the flashing attribute is set or reset on all visible
           // boxes.
           let boxes = this.findDayBoxesForItem(aAlarmItem);
@@ -1227,7 +1148,6 @@
               }
             }
           }
-
           if (!aStop) {
             // Set up a timer to stop the flashing after the total time.
             var this_ = this;
@@ -1238,12 +1158,12 @@
             delete this.mFlashingEvents[aAlarmItem.hashId];
           }
         ]]></body>
-			</method>
+      </method>
 
-		</implementation>
+    </implementation>
 
-		<handlers>
-			<handler event="DOMMouseScroll"><![CDATA[
+    <handlers>
+      <handler event="DOMMouseScroll"><![CDATA[
         let scrollEnabled = Preferences.get('calendar.view.mousescroll', true);
         if (!event.ctrlKey &&
             !event.shiftKey &&
@@ -1257,7 +1177,7 @@
             this.moveView(event.detail < 0 ? -1 : 1);
         }
       ]]></handler>
-		</handlers>
+    </handlers>
 
-	</binding>
+  </binding>
 </bindings>
