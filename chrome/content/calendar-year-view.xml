@@ -951,6 +951,8 @@
             rowdate = this.mStartDate.clone()
             rowdate.month = i;
             var date = rowdate.clone()
+            
+            
             for (var j = 1; j < row.childNodes.length; j++){
               row.childNodes[j].setAttribute("class","calendar-month-day-box-other-month");
               row.childNodes[j].setAttribute("relation","");
@@ -1035,6 +1037,8 @@
 
             }
           }
+          
+          
           // Store these, so that we can access them later
           this.mDateBoxes = dateBoxes;
           this.hideDaysOff();
@@ -1157,6 +1161,7 @@
       <method name="doAddItem">
         <parameter name="aItem"/>
         <body><![CDATA[
+
           let boxes = this.findDayBoxesForItem(aItem);
 
           if (!boxes.length)
