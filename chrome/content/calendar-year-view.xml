@@ -938,11 +938,11 @@
 
 
 			  let daybox_otherMonth = row.childNodes[j];
-			  console.log(daybox_otherMonth);
+			  //console.log(daybox_otherMonth);
 			  daybox_class = daybox_otherMonth.getAttribute("class");
 			  let dayLabel_otherMonth = document.getAnonymousElementByAttribute(daybox_otherMonth, "anonid", "day-label");
-			  console.log(dayLabel_otherMonth);
-			  console.log(dayLabel_otherMonth.getAttribute("value"));
+			  //console.log(dayLabel_otherMonth);
+			  //console.log(dayLabel_otherMonth.getAttribute("value"));
 			  if (daybox_class == "calendar-month-day-box-other-month"){
 				  dayLabel_otherMonth.setAttribute("hidden","true");
 				  }
@@ -1055,10 +1055,14 @@
 				  for (let i = 0; i < rows.length; i++) {
 					  let row = rows[i];
 					  rowdate = this.mStartDate.clone();
+					  rowdate.month = i;
+					  let date = rowdate.clone();
+						
 					  for (let jj = rowdate.weekday; jj < rowdate.endOfMonth.day+rowdate.weekday; jj++) {
 					      j=jj+1;
 						  let daybox = row.childNodes[j];
 						  let weekLabel = document.getAnonymousElementByAttribute(daybox, "anonid", "week-label");
+						  console.log(weekLabel);
 						  weekLabel.hidden = true;
 					  }
 				  }
