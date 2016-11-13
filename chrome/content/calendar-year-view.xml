@@ -403,6 +403,7 @@
               cmp = a.item.endDate.compare(b.item.endDate);
               if (cmp != 0)
                 return cmp;
+
               if (a.item.title < b.item.title)
                 return -1;
               if (a.item.title > b.item.title)
@@ -411,6 +412,7 @@
 
             return 0;
           }
+
           // Insert the new item block (while keeping the array sorted),
           // and then relayout. Use a binary search insertation because the
           // array is already sorted. Array.Sort would use quicksort which is
@@ -949,8 +951,6 @@
             rowdate = this.mStartDate.clone()
             rowdate.month = i;
             var date = rowdate.clone()
-            
-            
             for (var j = 1; j < row.childNodes.length; j++){
               row.childNodes[j].setAttribute("class","calendar-month-day-box-other-month");
               row.childNodes[j].setAttribute("relation","");
@@ -997,6 +997,7 @@
                       daybox.setAttribute("relation", "future");
                       break;
               }
+
               daybox.setAttribute("class", boxClass);
 
               daybox.setDate(daydate);
@@ -1034,8 +1035,6 @@
 
             }
           }
-          
-          
           // Store these, so that we can access them later
           this.mDateBoxes = dateBoxes;
           this.hideDaysOff();
@@ -1177,6 +1176,7 @@
 
           if (!boxes.length)
             return;
+
           function isNotItem(a) {
               return (a.hashId != aItem.hashId);
           }
