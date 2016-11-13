@@ -225,6 +225,7 @@
           } else if (isToDo(val)) {
             icon.setAttribute("type", "todo");
           }
+
           this.setEditableLabel();
           this.setCSSClasses();
           return val;
@@ -273,6 +274,7 @@
           if (sel && sel == "true") {
             return true;
           }
+
           return false;
         ]]></getter>
         <setter><![CDATA[
@@ -298,6 +300,7 @@
         <setter><![CDATA[
           if (this.mShowMonthLabel == val) {
             return val;
+
           }
           this.mShowMonthLabel = val;
           if (!this.mDate) {
@@ -318,6 +321,7 @@
       <method name="setDate">
         <parameter name="aDate"/>
         <body><![CDATA[
+
           // Remove all the old events
           this.mItemData = new Array();
           while(this.hasChildNodes()) {
@@ -326,6 +330,7 @@
 	  // Reset more
           this.morelabel.setAttribute("class","calendar-year-day-box-more-off");
 	  this.morelabel.setAttribute("tooltiptext","");
+
           if (!aDate) {
             //throw Components.results.NS_ERROR_NULL_POINTER;
             this.setAttribute("value", "");
@@ -334,6 +339,7 @@
           if (this.mDate && this.mDate.compare(aDate) == 0)
             return;
           this.mDate = aDate;
+
          /*if (this.mShowMonthLabel) {
              var monthName = calGetString("dateFormat", "month." + (aDate.month+1) + ".Mmm");
              this.setAttribute("value", aDate.day + " " + monthName);
@@ -350,6 +356,7 @@
           // skip item if hidden in this view
           if (aItem.calendar.getProperty('yearview.hide')===true)
             return;
+
           // XXX This scales badly for adding lots of items: O(N^2)
           for each (ed in this.mItemData) {
             if (aItem.hashId == ed.item.hashId)
@@ -1077,8 +1084,10 @@
         <parameter name="aItem"/>
         <body><![CDATA[
           let boxes = this.findDayBoxesForItem(aItem);
+
           if (!boxes.length)
             return;
+
           for each (box in boxes) {
             box.addItem(aItem);
           }
@@ -1088,7 +1097,9 @@
       <method name="doDeleteItem">
         <parameter name="aItem"/>
         <body><![CDATA[
+
           let boxes = this.findDayBoxesForItem(aItem);
+
           if (!boxes.length)
             return;
           function isNotItem(a) {
@@ -1096,9 +1107,11 @@
           }
           var oldLength = this.mSelectedItems.length;
           this.mSelectedItems = this.mSelectedItems.filter(isNotItem);
+
           for each (box in boxes) {
             box.deleteItem(aItem);
           }
+
           // If a deleted event was selected, we need to announce that the
           // selection changed.
           if (oldLength != this.mSelectedItems.length) {
@@ -1130,10 +1143,12 @@
         <body><![CDATA[
           var showIndicator = Preferences.get("calendar.alarms.indicator.show", true);
           var totaltime = Preferences.get("calendar.alarms.indicator.totaltime", 3600);
+
           if (!aStop && (!showIndicator || totaltime < 1)) {
             // No need to animate if the indicator should not be shown.
             return;
           }
+
           // Make sure the flashing attribute is set or reset on all visible
           // boxes.
           let boxes = this.findDayBoxesForItem(aAlarmItem);
@@ -1148,6 +1163,7 @@
               }
             }
           }
+
           if (!aStop) {
             // Set up a timer to stop the flashing after the total time.
             var this_ = this;
