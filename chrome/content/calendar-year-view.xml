@@ -1,32 +1,51 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<!-- - ***** BEGIN LICENSE BLOCK ***** - Version: MPL 1.1/GPL 2.0/LGPL 2.1 
-	- - The contents of this file are subject to the Mozilla Public License Version 
-	- 1.1 (the "License"); you may not use this file except in compliance with 
-	- the License. You may obtain a copy of the License at - http://www.mozilla.org/MPL/ 
-	- - Software distributed under the License is distributed on an "AS IS" basis, 
-	- WITHOUT WARRANTY OF ANY KIND, either express or implied. See the License 
-	- for the specific language governing rights and limitations under the - 
-	License. - - The Original Code is calendar views. - - The Initial Developer 
-	of the Original Code is - Oracle Corporation - Portions created by the Initial 
-	Developer are Copyright (C) 2005 - the Initial Developer. All Rights Reserved. 
-	- - Contributor(s): - Vladimir Vukicevic <vladimir@pobox.com> - Stefan Sitter 
-	<ssitter@googlemail.com> - Clint Talbert <cmtalbert@myfastmail.com> - Michael 
-	Buettner <michael.buettner@sun.com> - Philipp Kewisch <mozilla@kewis.ch> 
-	- Markus Adrario <MarkusAdrario@web.de> - Berend Cornelius <berend.cornelius@sun.com> 
-	- Martin Schroeder <mschroeder@mozilla.x-home.org> - - Alternatively, the 
-	contents of this file may be used under the terms of - either the GNU General 
-	Public License Version 2 or later (the "GPL"), or - the GNU Lesser General 
-	Public License Version 2.1 or later (the "LGPL"), - in which case the provisions 
-	of the GPL or the LGPL are applicable instead - of those above. If you wish 
-	to allow use of your version of this file only - under the terms of either 
-	the GPL or the LGPL, and not to allow others to - use your version of this 
-	file under the terms of the MPL, indicate your - decision by deleting the 
-	provisions above and replace them with the notice - and other provisions 
-	required by the GPL or the LGPL. If you do not delete - the provisions above, 
-	a recipient may use your version of this file under - the terms of any one 
-	of the MPL, the GPL or the LGPL. - - ***** END LICENSE BLOCK ***** -->
+<!--
+   - ***** BEGIN LICENSE BLOCK *****
+   - Version: MPL 1.1/GPL 2.0/LGPL 2.1
+   -
+   - The contents of this file are subject to the Mozilla Public License Version
+   - 1.1 (the "License"); you may not use this file except in compliance with
+   - the License. You may obtain a copy of the License at
+   - http://www.mozilla.org/MPL/
+   -
+   - Software distributed under the License is distributed on an "AS IS" basis,
+   - WITHOUT WARRANTY OF ANY KIND, either express or implied. See the License
+   - for the specific language governing rights and limitations under the
+   - License.
+   -
+   - The Original Code is calendar views.
+   -
+   - The Initial Developer of the Original Code is
+   -   Oracle Corporation
+   - Portions created by the Initial Developer are Copyright (C) 2005
+   - the Initial Developer. All Rights Reserved.
+   -
+   - Contributor(s):
+   -   Vladimir Vukicevic <vladimir@pobox.com>
+   -   Stefan Sitter <ssitter@googlemail.com>
+   -   Clint Talbert <cmtalbert@myfastmail.com>
+   -   Michael Buettner <michael.buettner@sun.com>
+   -   Philipp Kewisch <mozilla@kewis.ch>
+   -   Markus Adrario <MarkusAdrario@web.de>
+   -   Berend Cornelius <berend.cornelius@sun.com>
+   -   Martin Schroeder <mschroeder@mozilla.x-home.org>
+   -
+   - Alternatively, the contents of this file may be used under the terms of
+   - either the GNU General Public License Version 2 or later (the "GPL"), or
+   - the GNU Lesser General Public License Version 2.1 or later (the "LGPL"),
+   - in which case the provisions of the GPL or the LGPL are applicable instead
+   - of those above. If you wish to allow use of your version of this file only
+   - under the terms of either the GPL or the LGPL, and not to allow others to
+   - use your version of this file under the terms of the MPL, indicate your
+   - decision by deleting the provisions above and replace them with the notice
+   - and other provisions required by the GPL or the LGPL. If you do not delete
+   - the provisions above, a recipient may use your version of this file under
+   - the terms of any one of the MPL, the GPL or the LGPL.
+   -
+   - ***** END LICENSE BLOCK *****
+-->
 
-<!-- Note that this file depends on helper functions in calUtils.js -->
+<!-- Note that this file depends on helper functions in calUtils.js-->
 
 <!DOCTYPE bindings SYSTEM "chrome://global/locale/global.dtd" >
 
@@ -571,13 +590,12 @@
          }
 
          //yeargridrows =  document.getAnonymousElementByAttribute(this, "anonid", "yeargridrows");
-         /* rows and days */
+         /* righe e giorni */
          for (var m=0; m<12; m++) {
             var row = createXULElement("row");
             row.setAttribute("flex","1");
             row.setAttribute("class", "calendar-month-view-grid-row");
 
-		    //the first box in the row is the name of the month
             var day = createXULElement("label");
             day.setAttribute("flex","1");
             var monthName = calGetString("dateFormat", "month." + (m+1) + ".Mmm");
@@ -586,8 +604,6 @@
 
             for (var d=0; d<maxday; d++) {
                var day = createXULElement("calendar-year-day-box");
-               // trying to access week-label...
-               //let weekLabel = document.getElementsByAttribute("anonid","weekAndDay-label");
                row.appendChild(day);
             }
             this.yeargridrows.appendChild(row);
