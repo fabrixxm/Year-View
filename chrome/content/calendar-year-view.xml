@@ -935,6 +935,27 @@
               row.childNodes[j].setAttribute("relation","");
               row.childNodes[j].showMonthLabel = false;
               row.childNodes[j].setDate(null);
+
+
+			  let daybox_otherMonth = row.childNodes[j];
+			  console.log(daybox_otherMonth);
+			  daybox_class = daybox_otherMonth.getAttribute("class");
+			  let dayLabel_otherMonth = document.getAnonymousElementByAttribute(daybox_otherMonth, "anonid", "day-label");
+			  console.log(dayLabel_otherMonth);
+			  console.log(dayLabel_otherMonth.getAttribute("value"));
+			  if (daybox_class == "calendar-month-day-box-other-month"){
+				  dayLabel_otherMonth.setAttribute("hidden","true");
+				  }
+              
+              //if value="", this is not a date box: hide it
+           	  //console.log(row.childNodes[j].childNodes);
+              //console.log(row.childNodes[j]);
+              //console.log(row.childNodes[j].getAttribute("value"));
+              //if (row.childNodes[j].getAttribute("value") == ""){
+              //	row.childNodes[j].setAttribute("hidden", "true");
+              //	} else {
+              //	row.childNodes[j].setAttribute("hidden", "false");
+              //	}
             }
 
 
@@ -977,10 +998,15 @@
               daybox.setDate(daydate);
               daybox.showMonthLabel = true;
               daybox.calendarView = this;
+
+              //the daybox is a "current-month" (there's a date inside): unhide its day-label:
+              let dayLabelCurrentMonth = document.getAnonymousElementByAttribute(daybox, "anonid", "day-label");
+              dayLabelCurrentMonth.setAttribute("hidden","false");
               
               // WEEK LABEL:
 			  if (this.mShowWeekNumber) { // the user has chosen to display the week number
 				  let weekLabel = document.getAnonymousElementByAttribute(daybox, "anonid", "week-label");
+				  //console.log(daybox);
 				  weekLabel.removeAttribute("hidden"); // display it
 				  let weekNumber = cal.getWeekInfoService().getWeekTitle(date);
 				  let weekString = cal.calGetString("calendar", "abbreviationOfWeek", [weekNumber]);
