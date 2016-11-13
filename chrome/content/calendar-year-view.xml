@@ -300,9 +300,9 @@
         <setter><![CDATA[
           if (this.mShowMonthLabel == val) {
             return val;
-
           }
           this.mShowMonthLabel = val;
+
           if (!this.mDate) {
             return val;
           }
@@ -338,6 +338,7 @@
          }
           if (this.mDate && this.mDate.compare(aDate) == 0)
             return;
+
           this.mDate = aDate;
 
          /*if (this.mShowMonthLabel) {
@@ -365,31 +366,40 @@
               break;
             }
           }
+
           function dayboxItemComparator(a, b) {
             var aIsEvent = isEvent(a.item);
             var aIsTodo = isToDo(a.item);
+
             var bIsEvent = isEvent(b.item);
             var bIsTodo = isToDo(b.item);
+
             if ((!aIsEvent && !aIsTodo) || (!bIsEvent && !bIsTodo)) {
               // XXX ????
               dump ("Don't know how to sort these two events: " + a.item + " " + b.item + "\n");
               return 0;
             }
+
             // sort todos before events
             if (aIsTodo && bIsEvent) return -1;
             if (aIsEvent && bIsTodo) return 1;
+
             // XXX how do I sort todos?
             if (aIsTodo && bIsTodo) {
               return 0;
             }
+
             if (aIsEvent && bIsEvent) {
               // sort all day events before events with a duration
               if (a.item.startDate.isDate && !b.item.startDate.isDate) return -1;
               if (!a.item.startDate.isDate && b.item.startDate.isDate) return 1;
+
               var cmp;
+
               cmp = a.item.startDate.compare(b.item.startDate);
               if (cmp != 0)
                 return cmp;
+
               cmp = a.item.endDate.compare(b.item.endDate);
               if (cmp != 0)
                 return cmp;
@@ -398,6 +408,7 @@
               if (a.item.title > b.item.title)
                 return 1;
             }
+
             return 0;
           }
           // Insert the new item block (while keeping the array sorted),
@@ -435,6 +446,7 @@
         <parameter name="aItem"/>
         <body><![CDATA[
           var deleted = [];
+
           var origLen = this.mItemData.length;
           this.mItemData = this.mItemData.filter(
             function(itd) {
@@ -445,6 +457,7 @@
               }
               return true;
             });
+
           if (deleted.length > 0) {
             for each (itd in deleted) {
               if (itd.box)
@@ -461,19 +474,24 @@
 	  var df = Components.classes["@mozilla.org/calendar/datetime-formatter;1"].
                        getService(Components.interfaces.calIDateTimeFormatter);
 	  var timezone = this.calendarView ? this.calendarView.mTimezone : calendarDefaultTimezone();
+
 	  var tooltip="";
           for (var i = 0; i < this.mItemData.length; i++) {
             var itd = this.mItemData[i];
+
             if (!itd.box) {
               // find what element to insert before
               var before = null;
               for (var j = i+1; !before && this.mItemData[j]; j++)
                 before = this.mItemData[j].box;
+
               var box = createXULElement("calendar-year-day-box-item");
               box.setAttribute("context", this.getAttribute("item-context") || this.getAttribute("context"));
               box.setAttribute("calendar-uri", itd.item.calendar.uri.spec);
               box.setAttribute("calendar-id", itd.item.calendar.id);
+
               this.insertBefore(box, before);
+
               box.calendarView = this.calendarView;
               box.item = itd.item;
               box.parentBox = this;
@@ -546,6 +564,7 @@
       <constructor><![CDATA[
         Components.utils.import("resource://gre/modules/Preferences.jsm");
         Components.utils.import("resource://calendar/modules/calViewUtils.jsm");
+
          // Set the preference for the default start of the week
          this.weekStartOffset = Preferences.get("calendar.week.start", 0);
          /*
@@ -555,11 +574,14 @@
             hdr.weekDay = (i + this.mWeekStartOffset) % 7;
             hdr.shortWeekNames = false;
           }*/
+
          var maxday=37;
+
          // header "month name"
          var hdr = createXULElement("calendar-day-label");
          this.labeldaybox.appendChild(hdr);
          hdr.shortWeekNames = true;
+
          // week day name heads
          for (var i=0; i<maxday; i++){
             var hdr = createXULElement("calendar-year-day-label");
@@ -567,6 +589,7 @@
             hdr.weekDay = i % 7;
             hdr.shortWeekNames = true;
          }
+
          /* columns */
          yeargridcolumns =  document.getAnonymousElementByAttribute(this, "anonid", "yeargridcolumns");
          for (var d=0; d<maxday+1; d++) {
@@ -575,17 +598,20 @@
             col.setAttribute("class", "calendar-month-view-grid-column");
             yeargridcolumns.appendChild(col);
          }
+
          //yeargridrows =  document.getAnonymousElementByAttribute(this, "anonid", "yeargridrows");
          /* righe e giorni */
          for (var m=0; m<12; m++) {
             var row = createXULElement("row");
             row.setAttribute("flex","1");
             row.setAttribute("class", "calendar-month-view-grid-row");
+
             var day = createXULElement("label");
             day.setAttribute("flex","1");
             var monthName = calGetString("dateFormat", "month." + (m+1) + ".Mmm");
             day.setAttribute("value",monthName);
             row.appendChild(day);
+
             for (var d=0; d<maxday; d++) {
                var day = createXULElement("calendar-year-day-box");
                row.appendChild(day);
@@ -615,9 +641,12 @@
           var needsrelayout = false;
           if (aAttr == "context" || aAttr == "item-context")
               needsrelayout = true;
+
           var ret = XULElement.prototype.setAttribute.call (this, aAttr, aVal);
+
           if (needsrelayout)
               this.relayout();
+
           return ret;
         ]]></body>
       </method>
@@ -662,22 +691,27 @@
         <parameter name="aPreference"/>
         <body><![CDATA[
            aSubject.QueryInterface(Components.interfaces.nsIPrefBranch2);
+
            switch (aPreference) {
                case "calendar.previousweeks.inview":
                    this.updateDaysOffPrefs();
                    this.refreshView();
                    break;
+
                case "calendar.week.start":
                    this.weekStartOffset = aSubject.getIntPref(aPreference);
                    // Refresh the view so the settings take effect
                    this.refreshView();
                    break;
+
                case "calendar.weeks.inview":
                    this.weeksInView = aSubject.getIntPref(aPreference);
                    break;
+
                case "calendar.previousweeks.inview":
                    this.refreshView();
                    break;
+
               case "calendar.view-minimonth.showWeekNumber":
                   this.mShowWeekNumber = aSubject.getBoolPref(aPreference);
                   if (this.mShowWeekNumber) {
@@ -686,6 +720,7 @@
                       this.hideWeekNumbers();
                   }
                   break;
+
                default:
                    this.handleCommonPreference(aSubject, aTopic, aPreference);
                    break;
@@ -715,7 +750,9 @@
                   }
               }
           }
+
           this.mSelectedItems = aItems || [];
+
           if (this.mSelectedItems.length) {
               for each (var item in this.mSelectedItems) {
                   let newboxes = this.findDayBoxesForItem(item);
@@ -724,6 +761,7 @@
                   }
               }
           }
+
           if (!aSuppressEvent) {
               this.fireEvent("itemselect", this.mSelectedItems);
           }
@@ -739,11 +777,13 @@
         <getter><![CDATA[
           if (this.mSelectedDayBox)
             return this.mSelectedDayBox.date.clone();
+
           return null;
         ]]></getter>
         <setter><![CDATA[
           if (this.mSelectedDayBox)
             this.mSelectedDayBox.selected = false;
+
           var realVal = val;
           if (!realVal.isDate) {
             realVal = val.clone();
@@ -791,6 +831,7 @@
          this.mStartDate = aStartDate; //getWeekInfoService().getStartOfWeek(aStartDate.getInTimezone(this.mTimezone))
          this.mEndDate = aEndDate; //getWeekInfoService().getEndOfWeek(aEndDate.getInTimezone(this.mTimezone));
          this.refresh();
+
          // Update the navigation bar.
          cal.navigationBar.setDateRange(aStartDate, aEndDate);
         ]]></body>
@@ -818,9 +859,11 @@
             aCount.value = 0;
             return [];
           }
+
           let results = [];
           let curDate = this.mStartDate.clone();
           curDate.isDate = true;
+
           while (curDate.compare(this.mEndDate) <= 0) {
             results.push(curDate.clone());
             curDate.day += 1;
@@ -862,16 +905,20 @@
                  this.labeldaybox.childNodes[i].weekDay = (i + this.weekStartOffset) % 7;
              }
          }*/
+
           if (this.mSelectedItems.length) {
             this.mSelectedItems = [];
           }
+
           // Clear out the old selection, since it won't be valid after relayout
           if (this.mSelectedDayBox) {
             this.mSelectedDayBox.selected = false;
           }
+
           if (!this.mStartDate || !this.mEndDate) {
             throw Components.results.NS_ERROR_FAILURE;
           }
+
           // Days that are not in the main month on display are displayed with
           // a gray background.  Unless the month actually starts on a Sunday,
           // this means that mStartDate.month is 1 month less than the main month
@@ -880,21 +927,30 @@
             mainMonth++;
             mainMonth = mainMonth % 12;
           }*/
+
           var dateBoxes = [];
           var today = this.today();
+
           // This gets set to true, telling us to collapse the rest of the rows
           var finished = false;
           var dateList = this.getDateList({})
+
           var rows = this.yeargridrows.childNodes;
+
+
+
           // Iterate through each monthgridrow and set up the day-boxes that
           // are its child nodes.  Remember, childNodes is not a normal array,
           // so don't use the in operator if you don't want extra properties
           // coming out.
           for (var i = 0; i < rows.length; i++) {
             var row = rows[i];
+
             rowdate = this.mStartDate.clone()
             rowdate.month = i;
             var date = rowdate.clone()
+            
+            
             for (var j = 1; j < row.childNodes.length; j++){
               row.childNodes[j].setAttribute("class","calendar-month-day-box-other-month");
               row.childNodes[j].setAttribute("relation","");
@@ -916,15 +972,19 @@
               j=jj+1;
               var daybox = row.childNodes[j];
               var daydate = date.clone()
+
               daybox.setAttribute("context", this.getAttribute("context"));
               daybox.setAttribute("item-context", this.getAttribute("item-context") || this.getAttribute("context"));
+
               // Set the box-class depending on if this box displays a day in
               // the month being currently shown or not.
               var boxClass = "calendar-month-day-box-current-month";
+
               function matchesDayOff(dayOffNum) { return dayOffNum == date.weekday; }
               if (this.mDaysOffArray.some(matchesDayOff)) {
                 boxClass = "calendar-month-day-box-day-off " + boxClass;
               }
+
               // Set up date relations
               switch (date.compare(today)) {
                   case -1:
@@ -938,6 +998,7 @@
                       break;
               }
               daybox.setAttribute("class", boxClass);
+
               daybox.setDate(daydate);
               daybox.showMonthLabel = true;
               daybox.calendarView = this;
@@ -960,6 +1021,7 @@
 
               //daybox.date = date;
               dateBoxes.push(daybox);
+
               /*
               var boxdata = {
                 date: daydate,
@@ -967,12 +1029,17 @@
                 box: daybox
               };
               dateBoxes.push(boxdata);*/
+
               date.day += 1;
+
             }
           }
+          
+          
           // Store these, so that we can access them later
           this.mDateBoxes = dateBoxes;
           this.hideDaysOff();
+
           // Highlight today, if it's in the range of the view
           //TODO: compare con dateStart e dateEnd
           /*
@@ -1034,6 +1101,7 @@
           var targetDate = null;
           var finishDate = null;
           var boxes = new Array();
+
           // All our boxes are in default tz, so we need these times in them too.
           if (isEvent(aItem)) {
             targetDate = aItem.startDate.getInTimezone(this.mTimezone);
@@ -1046,8 +1114,10 @@
               }
             }
           }
+
           if (!targetDate)
             return boxes;
+
           if (!finishDate) {
             let maybeBox = this.findDayBoxForDate(targetDate);
             if (maybeBox) {
@@ -1055,12 +1125,14 @@
             }
             return boxes;
           }
+
           if (!targetDate.isDate) {
             // Reset the time to 00:00, so that we really get all the boxes
             targetDate.hour = 0;
             targetDate.minute = 0;
             targetDate.second = 0;
           }
+
           if (targetDate.compare(finishDate) == 0) {
               // Zero length events are silly, but we have to handle them
               let box = this.findDayBoxForDate(targetDate);
@@ -1068,14 +1140,17 @@
                   boxes.push(box);
               }
           }
+
           while (targetDate.compare(finishDate) == -1) {
             let box = this.findDayBoxForDate(targetDate);
+
             // This might not exist, if the event spans the view start or end
             if (box) {
                 boxes.push(box);
             }
             targetDate.day += 1;
           }
+
           return boxes;
 	]]></body>
       </method>
