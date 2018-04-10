@@ -238,17 +238,24 @@
   </binding>
 
   <binding id="calendar-year-day-box" extends="chrome://calendar/content/widgets/calendar-widgets.xml#dragndropContainer">
-    <content orient="vertical">
-      <xul:label anonid="day-label"
-                 crop="end"
-                 mousethrough="always"
-                 class="calendar-month-day-box-date-label"
-                 xbl:inherits="relation,selected,value"/>
-      <xul:vbox anonid="day-items" class="calendar-year-day-box-items-box" flex="1">
-        <children/>
-      </xul:vbox>
-	<xul:label anonid="day-more" class="calendar-year-day-box-more-off" value=" " />
-    </content>
+		<content orient="vertical">
+			<xul:hbox>
+				<xul:label anonid="week-label"  
+					flex="1" crop="end" hidden="true" mousethrough="always"
+					class="calendar-month-day-box-week-label calendar-month-day-box-date-label"
+					xbl:inherits="relation,selected" />
+				<xul:label anonid="day-label" 
+					flex="1" crop="end" mousethrough="always" 
+					class="calendar-month-day-box-date-label"
+					xbl:inherits="relation,selected,value" />
+			</xul:hbox>
+			<xul:vbox anonid="day-items" class="calendar-year-day-box-items-box"
+				flex="1">
+				<children />
+			</xul:vbox>
+			<xul:label anonid="day-more" class="calendar-year-day-box-more-off"
+				value=" " />
+		</content>
 
     <implementation>
       <field name="mDate">null</field>
@@ -613,6 +620,10 @@
             }
             this.yeargridrows.appendChild(row);
          }
+         
+         
+        // Set the preference for displaying the week number
+        this.mShowWeekNumber = Preferences.get("calendar.view-minimonth.showWeekNumber", true);
 
       ]]></constructor>
 
@@ -702,6 +713,15 @@
                case "calendar.previousweeks.inview":
                    this.refreshView();
                    break;
+
+              case "calendar.view-minimonth.showWeekNumber":
+                  this.mShowWeekNumber = aSubject.getBoolPref(aPreference);
+                  if (this.mShowWeekNumber) {
+                      this.refreshView();
+                  } else {
+                      this.hideWeekNumbers();
+                  }
+                  break;
 
                default:
                    this.handleCommonPreference(aSubject, aTopic, aPreference);
@@ -931,15 +951,24 @@
             rowdate = this.mStartDate.clone()
             rowdate.month = i;
             var date = rowdate.clone()
-
-
+            
+            
             for (var j = 1; j < row.childNodes.length; j++){
               row.childNodes[j].setAttribute("class","calendar-month-day-box-other-month");
               row.childNodes[j].setAttribute("relation","");
               row.childNodes[j].showMonthLabel = false;
               row.childNodes[j].setDate(null);
+              
+			  let daybox_otherMonth = row.childNodes[j];
+			  daybox_class = daybox_otherMonth.getAttribute("class");
+			  let dayLabel_otherMonth = document.getAnonymousElementByAttribute(daybox_otherMonth, "anonid", "day-label");
+			  if (daybox_class == "calendar-month-day-box-other-month"){
+				  dayLabel_otherMonth.setAttribute("hidden","true");
+				  }
             }
 
+			// used for week-label: display it only one time in each week:
+			var currentWeekNumber = 0;
 
             for (var jj = rowdate.weekday; jj < rowdate.endOfMonth.day+rowdate.weekday; jj++) {
               j=jj+1;
@@ -977,6 +1006,22 @@
               daybox.showMonthLabel = true;
               daybox.calendarView = this;
 
+              //the daybox is a "current-month" (there's a date inside): unhide its day-label:
+              let dayLabelCurrentMonth = document.getAnonymousElementByAttribute(daybox, "anonid", "day-label");
+              dayLabelCurrentMonth.setAttribute("hidden","false");
+              
+              // WEEK LABEL:
+			  if (this.mShowWeekNumber) { // the user has chosen to display the week number
+				  let weekLabel = document.getAnonymousElementByAttribute(daybox, "anonid", "week-label");
+				  weekLabel.removeAttribute("hidden"); // display it
+				  let weekNumber = cal.getWeekInfoService().getWeekTitle(date);
+				  let weekString = cal.calGetString("calendar", "abbreviationOfWeek", [weekNumber]);
+				  if (currentWeekNumber != weekString){ // ...this is a new week
+					  weekLabel.value = weekString; // so we display it
+					  currentWeekNumber = weekString; // actualize the current week number
+					  }
+				  }
+
               //daybox.date = date;
               dateBoxes.push(daybox);
 
@@ -992,8 +1037,8 @@
 
             }
           }
-
-
+          
+          
           // Store these, so that we can access them later
           this.mDateBoxes = dateBoxes;
           this.hideDaysOff();
@@ -1009,6 +1054,25 @@
           this.adjustWeekdayLength();
         ]]></body>
       </method>
+
+    	    <method name="hideWeekNumbers">
+		    	<body><![CDATA[
+				  let rows = this.yeargridrows.childNodes;
+				  for (let i = 0; i < rows.length; i++) {
+					  let row = rows[i];
+					  rowdate = this.mStartDate.clone();
+					  rowdate.month = i;
+					  let date = rowdate.clone();
+						
+					  for (let jj = rowdate.weekday; jj < rowdate.endOfMonth.day+rowdate.weekday; jj++) {
+					      j=jj+1;
+						  let daybox = row.childNodes[j];
+						  let weekLabel = document.getAnonymousElementByAttribute(daybox, "anonid", "week-label");
+						  weekLabel.hidden = true;
+					  }
+				  }
+				]]></body>
+			</method>
 
       <method name="hideDaysOff">
         <body><![CDATA[
@@ -1097,6 +1161,7 @@
       <method name="doAddItem">
         <parameter name="aItem"/>
         <body><![CDATA[
+
           let boxes = this.findDayBoxesForItem(aItem);
 
           if (!boxes.length)
@@ -1111,6 +1176,7 @@
       <method name="doDeleteItem">
         <parameter name="aItem"/>
         <body><![CDATA[
+
           let boxes = this.findDayBoxesForItem(aItem);
 
           if (!boxes.length)
