@@ -1,0 +1,11 @@
+# EditorConfig : http://EditorConfig.org
+
+root = true
+
+[*.{xml,xul}]
+indent_style = space
+indent_size = 2
+
+[*.js]
+indent_style = space
+indent_size = 2
