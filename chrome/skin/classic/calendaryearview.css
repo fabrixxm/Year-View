@@ -28,16 +28,15 @@ calendar-year-day-label[orient="vertical"] {
 
 
 calendar-year-day-box {
-    padding-right: 1px !important;
-    padding-bottom: 1px !important;
+    padding: 0 !important;
     border:none !important;
     border-left: 1px solid #D2D2D2 !important;
     border-bottom: 1px solid #D2D2D2 !important;
 }
 
 calendar-year-day-box-item {
-    margin: 1px;
-    padding: 0px 1px;
+    margin: 0 0 1px;
+    padding: 0;
 }
 
 calendar-year-day-box-item[selected="true"] .calendar-event-selection {
@@ -45,6 +44,9 @@ calendar-year-day-box-item[selected="true"] .calendar-event-selection {
     background-color: #ffdb67 !important;
 }
 
+.calendar-year-day-box-item-empty{
+    height: 14px;
+}
 
 .calendar-year-day-box-items-box {
   overflow-y: hidden;
@@ -62,6 +64,25 @@ calendar-year-day-box-item[selected="true"] .calendar-event-selection {
 	font-size: 4pt;
 }
 
+calendar-year-day-box-item .calendar-color-box {
+    border-radius: 0px;
+}
+
+calendar-year-day-box-item.day-box-item-start {
+    margin-left: 2px;
+}
+calendar-year-day-box-item.day-box-item-start .calendar-color-box {
+    border-top-left-radius: 2px;
+    border-bottom-left-radius: 2px;
+}
+calendar-year-day-box-item.day-box-item-end {
+    margin-right: 2px;
+}
+calendar-year-day-box-item.day-box-item-end .calendar-color-box {
+    border-top-right-radius: 2px;
+    border-bottom-right-radius: 2px;
+}
+
 
 calendar-year-view row > label {
     margin: 0px !important;
@@ -71,6 +92,7 @@ calendar-year-view row > label {
 
 /*calendar-year-day-box-item .calendar-event-details { display: none; }
 calendar-year-day-box-item .event-container { height: 3px; }*/
-calendar-year-day-box-item label{ font-size: 4pt; }
+calendar-year-day-box-item label{ font-size: 5pt; }
 calendar-year-day-box-item .alarm-image { height: 6px; width: 6px; }
-
+calendar-year-day-box-item .reminder-icon { height: 6px;}
+.reminder-icon { -moz-image-region: rect(0px 1px 1px 17px); }

@@ -240,12 +240,12 @@
   <binding id="calendar-year-day-box" extends="chrome://calendar/content/widgets/calendar-widgets.xml#dragndropContainer">
 		<content orient="vertical">
 			<xul:hbox>
-				<xul:label anonid="week-label"  
+				<xul:label anonid="week-label"
 					flex="1" crop="end" hidden="true" mousethrough="always"
 					class="calendar-month-day-box-week-label calendar-month-day-box-date-label"
 					xbl:inherits="relation,selected" />
-				<xul:label anonid="day-label" 
-					flex="1" crop="end" mousethrough="always" 
+				<xul:label anonid="day-label"
+					flex="1" crop="end" mousethrough="always"
 					class="calendar-month-day-box-date-label"
 					xbl:inherits="relation,selected,value" />
 			</xul:hbox>
@@ -262,6 +262,7 @@
       <!-- mItemData will always be kept sorted in display order -->
       <field name="mItemData">[]</field>
       <field name="mShowMonthLabel">false</field>
+      <field name="mPresentHashes">[]</field>
 
       <property name="date">
         <getter>return this.mDate;</getter>
@@ -290,7 +291,7 @@
         <getter>return document.getAnonymousElementByAttribute(this, "anonid", "day-items");</getter>
       </property>
       <property name="morelabel">
-	<getter>return document.getAnonymousElementByAttribute(this, "anonid", "day-more");</getter>
+        <getter>return document.getAnonymousElementByAttribute(this, "anonid", "day-more");</getter>
       </property>
 
       <property name="showMonthLabel">
@@ -306,12 +307,7 @@
           if (!this.mDate) {
             return val;
           }
-          /*if (val) {
-             var monthName = calGetString("dateFormat", "month." + (this.mDate.month+1) + ".Mmm");
-             this.setAttribute("value", this.mDate.day + " " + monthName);
-          } else {
-             this.setAttribute("value", this.mDate.day);
-          }*/
+
           this.setAttribute("value", this.mDate.day);
           return val;
         ]]></setter>
@@ -322,32 +318,26 @@
         <parameter name="aDate"/>
         <body><![CDATA[
 
-          // Remove all the old events
-          this.mItemData = new Array();
-          while(this.hasChildNodes()) {
-              this.removeChild(this.lastChild);
-          }
-	  // Reset more
-          this.morelabel.setAttribute("class","calendar-year-day-box-more-off");
-	  this.morelabel.setAttribute("tooltiptext","");
+            // Remove all the old events
+            this.mItemData = new Array();
+            while(this.hasChildNodes()) {
+                this.removeChild(this.lastChild);
+            }
+            // Reset more
+            this.morelabel.setAttribute("class","calendar-year-day-box-more-off");
+            this.morelabel.setAttribute("tooltiptext","");
 
-          if (!aDate) {
-            //throw Components.results.NS_ERROR_NULL_POINTER;
-            this.setAttribute("value", "");
-            return;
-         }
-          if (this.mDate && this.mDate.compare(aDate) == 0)
-            return;
+            if (!aDate) {
+                //throw Components.results.NS_ERROR_NULL_POINTER;
+                this.setAttribute("value", "");
+                return;
+            }
+            if (this.mDate && this.mDate.compare(aDate) == 0)
+                return;
 
-          this.mDate = aDate;
+            this.mDate = aDate;
 
-         /*if (this.mShowMonthLabel) {
-             var monthName = calGetString("dateFormat", "month." + (aDate.month+1) + ".Mmm");
-             this.setAttribute("value", aDate.day + " " + monthName);
-          } else {
-             this.setAttribute("value", aDate.day);
-          }*/
-         this.setAttribute("value", aDate.day);
+            this.setAttribute("value", aDate.day);
         ]]></body>
       </method>
 
@@ -358,66 +348,12 @@
           if (aItem.calendar.getProperty('yearview.hide')===true)
             return;
 
-          // XXX This scales badly for adding lots of items: O(N^2)
-          for each (ed in this.mItemData) {
-            if (aItem.hashId == ed.item.hashId)
-            {
+          if (this.mPresentHashes.indexOf(aItem.hashId) > -1) {
               this.deleteItem(aItem);
-              break;
-            }
           }
 
-          function dayboxItemComparator(a, b) {
-            var aIsEvent = isEvent(a.item);
-            var aIsTodo = isToDo(a.item);
-
-            var bIsEvent = isEvent(b.item);
-            var bIsTodo = isToDo(b.item);
-
-            if ((!aIsEvent && !aIsTodo) || (!bIsEvent && !bIsTodo)) {
-              // XXX ????
-              dump ("Don't know how to sort these two events: " + a.item + " " + b.item + "\n");
-              return 0;
-            }
-
-            // sort todos before events
-            if (aIsTodo && bIsEvent) return -1;
-            if (aIsEvent && bIsTodo) return 1;
-
-            // XXX how do I sort todos?
-            if (aIsTodo && bIsTodo) {
-              return 0;
-            }
-
-            if (aIsEvent && bIsEvent) {
-              // sort all day events before events with a duration
-              if (a.item.startDate.isDate && !b.item.startDate.isDate) return -1;
-              if (!a.item.startDate.isDate && b.item.startDate.isDate) return 1;
-
-              var cmp;
-
-              cmp = a.item.startDate.compare(b.item.startDate);
-              if (cmp != 0)
-                return cmp;
-
-              cmp = a.item.endDate.compare(b.item.endDate);
-              if (cmp != 0)
-                return cmp;
-
-              if (a.item.title < b.item.title)
-                return -1;
-              if (a.item.title > b.item.title)
-                return 1;
-            }
-
-            return 0;
-          }
-
-          // Insert the new item block (while keeping the array sorted),
-          // and then relayout. Use a binary search insertation because the
-          // array is already sorted. Array.Sort would use quicksort which is
-          // not good for this case.
-          binaryInsert(this.mItemData, { item: aItem }, dayboxItemComparator, false);
+          this.mItemData.push({item:aItem});
+          this.mPresentHashes.push(aItem.hashId);
           this.relayout();
         ]]></body>
       </method>
@@ -450,17 +386,18 @@
           var deleted = [];
 
           var origLen = this.mItemData.length;
-          this.mItemData = this.mItemData.filter(
-            function(itd) {
+          this.mItemData = this.mItemData.filter(function(itd) {
               if (aItem.hashId == itd.item.hashId)
               {
                 deleted.push(itd);
                 return false;
               }
               return true;
-            });
+          });
 
           if (deleted.length > 0) {
+            this.mPresentHashes.splice( this.mPresentHashes.indexOf(aItem.hashId) , 1 );
+
             for each (itd in deleted) {
               if (itd.box)
                 this.removeChild(itd.box);
@@ -473,42 +410,130 @@
 
       <method name="relayout">
         <body><![CDATA[
-	  var df = Components.classes["@mozilla.org/calendar/datetime-formatter;1"].
-                       getService(Components.interfaces.calIDateTimeFormatter);
-	  var timezone = this.calendarView ? this.calendarView.mTimezone : calendarDefaultTimezone();
+            var df = Components.classes["@mozilla.org/calendar/datetime-formatter;1"].
+                           getService(Components.interfaces.calIDateTimeFormatter);
+            var timezone = this.calendarView ? this.calendarView.mTimezone : calendarDefaultTimezone();
 
-	  var tooltip="";
-          for (var i = 0; i < this.mItemData.length; i++) {
-            var itd = this.mItemData[i];
+            var yearView = this.mCalendarView || document.getElementById("year-view");
 
-            if (!itd.box) {
-              // find what element to insert before
-              var before = null;
-              for (var j = i+1; !before && this.mItemData[j]; j++)
-                before = this.mItemData[j].box;
+            var tooltip="";
 
-              var box = createXULElement("calendar-year-day-box-item");
-              box.setAttribute("context", this.getAttribute("item-context") || this.getAttribute("context"));
-              box.setAttribute("calendar-uri", itd.item.calendar.uri.spec);
-              box.setAttribute("calendar-id", itd.item.calendar.id);
 
-              this.insertBefore(box, before);
+            /* Order day boxes, try to keep same position over days
+             * this will make redraw slower than ever.
+             */
 
-              box.calendarView = this.calendarView;
-              box.item = itd.item;
-              box.parentBox = this;
-              box.occurrence = itd.item;
-              itd.box = box;
+            // empty child nodes... more time
+            while(this.childNodes.length > 0) this.removeChild(this.childNodes[0]);
+
+            var needRelayout = [];
+
+            var lastslot = -1;
+            var slots = {};
+            for (var i = 0; i < this.mItemData.length; i++) {
+                var itd = this.mItemData[i];
+                var itdslot = yearView.mItemsSlot[itd.item.hashId];
+
+                if (itdslot !== undefined && slots[itdslot] !== undefined) {
+                    // we have duplicated slots. let's reset this item slot and
+                    // later run a relayout of all of this item day boxes..
+                    yearView.mItemsSlot[itd.item.hashId] = undefined;
+                    yearView.mItemsSlot[slots[itdslot].item.hashId] = undefined
+                    needRelayout.push(itd);
+                    needRelayout.push(slots[itdslot])
+                    delete slots[itdslot]
+
+                    itdslot = undefined;
+                }
+
+                if ( itdslot !== undefined) {
+                    slots[itdslot] = itd;
+                    if (itdslot > lastslot) lastslot = itdslot;
+                }
+
             }
-	    tooltip += itd.item.title+"\n";
-          }
-	// needs more?
-	if (this.dayitems.clientHeight < (this.mItemData[0].box.clientHeight * this.mItemData.length)){
-		this.morelabel.setAttribute("class","calendar-year-day-box-more-on");
-		this.morelabel.setAttribute("tooltiptext", tooltip);
-	} else {
-		this.morelabel.setAttribute("class","calendar-year-day-box-more-off");
-	}
+
+            // fill slots
+            for (var i = 0; i < this.mItemData.length; i++) {
+                var itd = this.mItemData[i];
+
+                var slot = yearView.mItemsSlot[itd.item.hashId];
+
+                if (slot === undefined) {
+                    // no previous slot. find first free
+                    slot = lastslot+1;
+                    for(var j = 0; j < lastslot+1; j++){
+                        if (slots[j] === undefined) {
+                            slot = j;
+                            break;
+                        }
+                    }
+                    yearView.mItemsSlot[itd.item.hashId] = slot;
+                }
+
+                slots[slot] = itd;
+                if (slot > lastslot) lastslot = slot;
+            }
+
+            for (var i = 0; i < lastslot + 1; i++ ) {
+                var itd = slots[i];
+
+                if (itd === undefined) {
+
+                    var box = createXULElement("xul:box");
+                    box.setAttribute("class", "calendar-year-day-box-item-empty");
+                    box.parentBox = this;
+                    slot[i] = { box: box }
+                    this.insertBefore(box, null);
+                    continue;
+                }
+
+                if (itd.box) {
+                    delete itd.box;
+                }
+
+                var box = createXULElement("calendar-year-day-box-item");
+                box.setAttribute("context", this.getAttribute("item-context") || this.getAttribute("context"));
+                box.setAttribute("calendar-uri", itd.item.calendar.uri.spec);
+                box.setAttribute("calendar-id", itd.item.calendar.id);
+
+                if (isEvent(itd.item)) {
+                    var tomorrow = this.mDate.clone(); tomorrow.day++;
+
+                    if (itd.item.startDate.compare(this.mDate)==0) box.classList.add("day-box-item-start");
+                    if (itd.item.endDate.compare(this.mDate)==0) box.classList.add("day-box-item-end");
+                    if (itd.item.endDate.isDate && itd.item.endDate.compare(tomorrow)==0) box.classList.add("day-box-item-end");
+                } else {
+                    box.classList.add("day-box-item-start");
+                    box.classList.add("day-box-item-end");
+                }
+
+                this.insertBefore(box, null);
+
+                box.calendarView = this.calendarView;
+                box.item = itd.item;
+                box.parentBox = this;
+                box.occurrence = itd.item;
+                itd.box = box;
+
+                tooltip += itd.item.title+"\n";
+
+            }
+
+            for(var j=0; j < needRelayout.length; j++) {
+                boxes = yearview.findDayBoxesForItem(needRelayout[j].item);
+                for(var k=0; k < boxes.length; k++) {
+                    if (boxes[k] !== this) boxes.relayout();
+                }
+            }
+            // needs more?
+            if (this.mItemData.length > 0 && this.dayitems.clientHeight < (this.mItemData[0].box.clientHeight * this.mItemData.length)){
+                this.morelabel.setAttribute("class","calendar-year-day-box-more-on");
+                this.morelabel.setAttribute("tooltiptext", tooltip);
+            } else {
+                this.morelabel.setAttribute("class","calendar-year-day-box-more-off");
+            }
+
         ]]></body>
       </method>
       <method name="onDropItem">
@@ -620,20 +645,23 @@
             }
             this.yeargridrows.appendChild(row);
          }
-         
-         
+
+
         // Set the preference for displaying the week number
         this.mShowWeekNumber = Preferences.get("calendar.view-minimonth.showWeekNumber", true);
+
+        this.mItemsSlot = {};
 
       ]]></constructor>
 
       <!-- fields -->
-
       <field name="mDateBoxes">null</field>
       <field name="mSelectedDayBox">null</field>
 
       <field name="mShowDaysOutsideMonth">true</field>
       <field name="mShowFullMonth">true</field>
+
+      <field name="mItemsSlot">null</field>
 
       <!-- other methods -->
       <method name="setAttribute">
@@ -816,7 +844,7 @@
       </method>
 
       <method name="onResize">
-      <parameter name="aBinding"/>
+        <parameter name="aBinding"/>
         <body><![CDATA[
           aBinding.adjustWeekdayLength();
         ]]></body>
@@ -901,16 +929,10 @@
 
       <method name="relayout">
         <body><![CDATA[
-         // Adjust headers based on the starting day of the week, if necessary
-         /*if (this.labeldaybox.firstChild.weekDay != this.weekStartOffset) {
-             for (let i = 0; i < this.labeldaybox.childNodes.length; i++) {
-                 this.labeldaybox.childNodes[i].weekDay = (i + this.weekStartOffset) % 7;
-             }
-         }*/
-
           if (this.mSelectedItems.length) {
             this.mSelectedItems = [];
           }
+
 
           // Clear out the old selection, since it won't be valid after relayout
           if (this.mSelectedDayBox) {
@@ -921,14 +943,6 @@
             throw Components.results.NS_ERROR_FAILURE;
           }
 
-          // Days that are not in the main month on display are displayed with
-          // a gray background.  Unless the month actually starts on a Sunday,
-          // this means that mStartDate.month is 1 month less than the main month
-          /*var mainMonth = this.mStartDate.month;
-          if (this.mStartDate.day != 1) {
-            mainMonth++;
-            mainMonth = mainMonth % 12;
-          }*/
 
           var dateBoxes = [];
           var today = this.today();
@@ -951,24 +965,24 @@
             rowdate = this.mStartDate.clone()
             rowdate.month = i;
             var date = rowdate.clone()
-            
-            
+
+
             for (var j = 1; j < row.childNodes.length; j++){
               row.childNodes[j].setAttribute("class","calendar-month-day-box-other-month");
               row.childNodes[j].setAttribute("relation","");
               row.childNodes[j].showMonthLabel = false;
               row.childNodes[j].setDate(null);
-              
-			  let daybox_otherMonth = row.childNodes[j];
-			  daybox_class = daybox_otherMonth.getAttribute("class");
-			  let dayLabel_otherMonth = document.getAnonymousElementByAttribute(daybox_otherMonth, "anonid", "day-label");
-			  if (daybox_class == "calendar-month-day-box-other-month"){
-				  dayLabel_otherMonth.setAttribute("hidden","true");
-				  }
+
+              let daybox_otherMonth = row.childNodes[j];
+              daybox_class = daybox_otherMonth.getAttribute("class");
+              let dayLabel_otherMonth = document.getAnonymousElementByAttribute(daybox_otherMonth, "anonid", "day-label");
+              if (daybox_class == "calendar-month-day-box-other-month"){
+                dayLabel_otherMonth.setAttribute("hidden","true");
+              }
             }
 
-			// used for week-label: display it only one time in each week:
-			var currentWeekNumber = 0;
+            // used for week-label: display it only one time in each week:
+            var currentWeekNumber = 0;
 
             for (var jj = rowdate.weekday; jj < rowdate.endOfMonth.day+rowdate.weekday; jj++) {
               j=jj+1;
@@ -989,15 +1003,15 @@
 
               // Set up date relations
               switch (date.compare(today)) {
-                  case -1:
-                      daybox.setAttribute("relation", "past");
-                      break;
-                  case 0:
-                      daybox.setAttribute("relation", "today");
-                      break;
-                  case 1:
-                      daybox.setAttribute("relation", "future");
-                      break;
+                case -1:
+                  daybox.setAttribute("relation", "past");
+                  break;
+                case 0:
+                  daybox.setAttribute("relation", "today");
+                  break;
+                case 1:
+                  daybox.setAttribute("relation", "future");
+                  break;
               }
 
               daybox.setAttribute("class", boxClass);
@@ -1009,18 +1023,18 @@
               //the daybox is a "current-month" (there's a date inside): unhide its day-label:
               let dayLabelCurrentMonth = document.getAnonymousElementByAttribute(daybox, "anonid", "day-label");
               dayLabelCurrentMonth.setAttribute("hidden","false");
-              
+
               // WEEK LABEL:
-			  if (this.mShowWeekNumber) { // the user has chosen to display the week number
-				  let weekLabel = document.getAnonymousElementByAttribute(daybox, "anonid", "week-label");
-				  weekLabel.removeAttribute("hidden"); // display it
-				  let weekNumber = cal.getWeekInfoService().getWeekTitle(date);
-				  let weekString = cal.calGetString("calendar", "abbreviationOfWeek", [weekNumber]);
-				  if (currentWeekNumber != weekString){ // ...this is a new week
-					  weekLabel.value = weekString; // so we display it
-					  currentWeekNumber = weekString; // actualize the current week number
-					  }
-				  }
+              if (this.mShowWeekNumber) { // the user has chosen to display the week number
+                let weekLabel = document.getAnonymousElementByAttribute(daybox, "anonid", "week-label");
+                weekLabel.removeAttribute("hidden"); // display it
+                let weekNumber = cal.getWeekInfoService().getWeekTitle(date);
+                let weekString = cal.calGetString("calendar", "abbreviationOfWeek", [weekNumber]);
+                if (currentWeekNumber != weekString){ // ...this is a new week
+                  weekLabel.value = weekString; // so we display it
+                  currentWeekNumber = weekString; // actualize the current week number
+                }
+              }
 
               //daybox.date = date;
               dateBoxes.push(daybox);
@@ -1037,8 +1051,8 @@
 
             }
           }
-          
-          
+
+
           // Store these, so that we can access them later
           this.mDateBoxes = dateBoxes;
           this.hideDaysOff();
@@ -1055,24 +1069,24 @@
         ]]></body>
       </method>
 
-    	    <method name="hideWeekNumbers">
-		    	<body><![CDATA[
-				  let rows = this.yeargridrows.childNodes;
-				  for (let i = 0; i < rows.length; i++) {
-					  let row = rows[i];
-					  rowdate = this.mStartDate.clone();
-					  rowdate.month = i;
-					  let date = rowdate.clone();
-						
-					  for (let jj = rowdate.weekday; jj < rowdate.endOfMonth.day+rowdate.weekday; jj++) {
-					      j=jj+1;
-						  let daybox = row.childNodes[j];
-						  let weekLabel = document.getAnonymousElementByAttribute(daybox, "anonid", "week-label");
-						  weekLabel.hidden = true;
-					  }
-				  }
-				]]></body>
-			</method>
+      <method name="hideWeekNumbers">
+        <body><![CDATA[
+        let rows = this.yeargridrows.childNodes;
+        for (let i = 0; i < rows.length; i++) {
+          let row = rows[i];
+          rowdate = this.mStartDate.clone();
+          rowdate.month = i;
+          let date = rowdate.clone();
+
+          for (let jj = rowdate.weekday; jj < rowdate.endOfMonth.day+rowdate.weekday; jj++) {
+              j=jj+1;
+        	  let daybox = row.childNodes[j];
+        	  let weekLabel = document.getAnonymousElementByAttribute(daybox, "anonid", "week-label");
+        	  weekLabel.hidden = true;
+          }
+        }
+        ]]></body>
+      </method>
 
       <method name="hideDaysOff">
         <body><![CDATA[
@@ -1155,7 +1169,7 @@
           }
 
           return boxes;
-	]]></body>
+        ]]></body>
       </method>
 
       <method name="doAddItem">
@@ -1176,7 +1190,7 @@
       <method name="doDeleteItem">
         <parameter name="aItem"/>
         <body><![CDATA[
-
+          this.mItemsSlot = {};
           let boxes = this.findDayBoxesForItem(aItem);
 
           if (!boxes.length)
