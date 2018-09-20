@@ -16,6 +16,7 @@
         <em:translator>DakSrbija</em:translator>
         <em:translator>Joergen</em:translator>
         <em:translator>gutierrez</em:translator>
+        <em:translator>Georgi D. Sotirov</em:translator>
         <em:description>Year view for calendar</em:description>
         <em:homepageURL>http://kirgroup.com/</em:homepageURL>
         <em:iconURL>chrome://calendaryearview/skin/icon-32.png</em:iconURL>
@@ -100,6 +101,13 @@
             <em:homepageURL>https://github.com/fabrixxm/Year-View</em:homepageURL>
             <em:translator>Sinan Kaan Yerli</em:translator>
           </Description>
+        </em:localized>
+       <em:localized>
+            <RDF:Description>
+                <em:locale>bg</em:locale>
+                <em:name>Годишен изглед</em:name>
+                <em:description>Годишен изглед за календар</em:description>
+            </RDF:Description>
         </em:localized>
   </RDF:Description>
 </RDF:RDF>
