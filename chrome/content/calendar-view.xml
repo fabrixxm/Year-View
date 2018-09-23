@@ -78,10 +78,7 @@
             </method>
             <method name="getRangeDescription">
                 <body><![CDATA[
-                    /*let monthName = calGetString("dateFormat", "month." + (this.rangeStartDate.month + 1) + ".name");
-                    return calGetString("calendar", "monthInYear", [monthName, this.rangeStartDate.year]);*/
-
-                    return this.rangeStartDate.year;
+                    return this.mRangeStartDate.year;
                  ]]></body>
              </method>
             <method name="moveView">

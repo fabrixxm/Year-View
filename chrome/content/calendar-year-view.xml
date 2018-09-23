@@ -74,8 +74,8 @@
         <getter>return this.mWeekday;</getter>
         <setter><![CDATA[
           this.mWeekday = val % 7;
-          this.longName.value = getDateFormatter().dayName(val)[0];
-          this.shortName.value = getDateFormatter().shortDayName(val)[0];
+          this.longName.value = cal.getDateFormatter().dayName(val)[0];
+          this.shortName.value = cal.getDateFormatter().shortDayName(val)[0];
           return this.mWeekday;
         ]]></setter>
       </property>
@@ -86,10 +86,10 @@
         ]]></getter>
         <setter><![CDATA[
           this.mDate = val;
-          this.shortName.setAttribute("value", getDateFormatter().shortDayName(val.weekday) + " " +
-                                               getDateFormatter().formatDateWithoutYear(val));
-          this.longName.setAttribute("value", getDateFormatter().dayName(val.weekday) + " " +
-                                              getDateFormatter().formatDateWithoutYear(val));
+          this.shortName.setAttribute("value", cal.getDateFormatter().shortDayName(val.weekday) + " " +
+                                               cal.getDateFormatter().formatDateWithoutYear(val));
+          this.longName.setAttribute("value", cal.getDateFormatter().dayName(val.weekday) + " " +
+                                              cal.getDateFormatter().formatDateWithoutYear(val));
           return val;
         ]]></setter>
       </property>
@@ -183,52 +183,50 @@
       </xul:vbox>
     </content>
     <implementation>
+      <constructor><![CDATA[
+          ChromeUtils.import("resource://calendar/modules/calUtils.jsm");
+      ]]></constructor>
+
       <property name="occurrence">
         <getter><![CDATA[
             return this.mOccurrence;
         ]]></getter>
         <setter><![CDATA[
-          ASSERT(!this.mOccurrence, "Code changes needed to set the occurrence twice", true);
-          this.mOccurrence = val;
-          let icon = document.getAnonymousElementByAttribute(this, "anonid", "item-icon");
-          if (isEvent(val)) {
-            icon.setAttribute("type", "event");
-            if (!val.startDate.isDate) {
-              var label = document.getAnonymousElementByAttribute(this,"anonid","item-label");
-              var df = Components.classes["@mozilla.org/calendar/datetime-formatter;1"].
-                       getService(Components.interfaces.calIDateTimeFormatter);
-              var timezone = this.calendarView ? this.calendarView.mTimezone :
-                             calendarDefaultTimezone();
-              var parentDate = ensureDateTime(this.parentBox.date);
-              var startTime = val.startDate.getInTimezone(timezone);
-              var endTime = val.endDate.getInTimezone(timezone);
-              var nextDay = parentDate.clone();
-              nextDay.day++;
-              var comp = endTime.compare(nextDay);
-              if(startTime.compare( parentDate) == -1 ) {
-                if (comp == 1)  {
-                  label.value = "↔";
-                } else if (comp == 0) {
-                  label.value = "↤";
-                } else {
-                  label.value = "⇥ " + df.formatTime(endTime);
+            cal.ASSERT(!this.mOccurrence, "Code changes needed to set the occurrence twice", true);
+            this.mOccurrence = val;
+            if (cal.item.isEvent(val)) {
+                if (!val.startDate.isDate) {
+                    let label = document.getAnonymousElementByAttribute(this, "anonid", "item-label");
+                    let formatter = Components.classes["@mozilla.org/calendar/datetime-formatter;1"]
+                                              .getService(Components.interfaces.calIDateTimeFormatter);
+                    let timezone = this.calendarView ? this.calendarView.mTimezone
+                                                     : cal.dtz.defaultTimezone;
+                    let parentDate = cal.dtz.ensureDateTime(this.parentBox.date);
+                    let startTime = val.startDate.getInTimezone(timezone);
+                    let endTime = val.endDate.getInTimezone(timezone);
+                    let nextDay = parentDate.clone();
+                    nextDay.day++;
+                    let comp = endTime.compare(nextDay);
+                    if (startTime.compare(parentDate) == -1) {
+                        if (comp == 1) {
+                            label.value = "↔";
+                        } else if (comp == 0) {
+                            label.value = "↤";
+                        } else {
+                            label.value = "⇥ " + formatter.formatTime(endTime);
+                        }
+                    } else if (comp == 1) {
+                        label.value = "⇤ " + formatter.formatTime(startTime);
+                    } else {
+                        label.value = formatter.formatTime(startTime);
+                    }
+                    label.setAttribute("time", "true");
                 }
-              } else {
-                if (comp == 1) {
-                  label.value = "⇤ " + df.formatTime(startTime);
-                } else {
-                  label.value = df.formatTime(startTime);
-                }
-              }
-              label.setAttribute("time", "true");
             }
-          } else if (isToDo(val)) {
-            icon.setAttribute("type", "todo");
-          }
 
-          this.setEditableLabel();
-          this.setCSSClasses();
-          return val;
+            this.setEditableLabel();
+            this.setCSSClasses();
+            return val;
         ]]></setter>
       </property>
       <property name="parentBox"
@@ -361,22 +359,22 @@
       <method name="selectItem">
         <parameter name="aItem"/>
         <body><![CDATA[
-          for each (var itd in this.mItemData) {
+          this.mItemData.forEach(itd => {
               if (aItem && (itd.item.hashId == aItem.hashId)) {
                   itd.box.selected = true;
               }
-          }
+          });
         ]]></body>
       </method>
 
       <method name="unselectItem">
         <parameter name="aItem"/>
         <body><![CDATA[
-          for each (var itd in this.mItemData) {
+          this.mItemData.forEach(itd => {
               if (aItem && (itd.item.hashId == aItem.hashId)) {
                   itd.box.selected = false;
               }
-          }
+          });
         ]]></body>
       </method>
 
@@ -398,10 +396,10 @@
           if (deleted.length > 0) {
             this.mPresentHashes.splice( this.mPresentHashes.indexOf(aItem.hashId) , 1 );
 
-            for each (itd in deleted) {
+            deleted.forEach(itd => {
               if (itd.box)
                 this.removeChild(itd.box);
-            }
+            });
             // no need to relayout; all we did was delete
             //this.relayout();
           }
@@ -497,7 +495,7 @@
                 box.setAttribute("calendar-uri", itd.item.calendar.uri.spec);
                 box.setAttribute("calendar-id", itd.item.calendar.id);
 
-                if (isEvent(itd.item)) {
+                if (cal.item.isEvent(itd.item)) {
                     var tomorrow = this.mDate.clone(); tomorrow.day++;
 
                     if (itd.item.startDate.compare(this.mDate)==0) box.classList.add("day-box-item-start");
@@ -590,7 +588,7 @@
       <!-- constructor -->
       <constructor><![CDATA[
         Components.utils.import("resource://gre/modules/Preferences.jsm");
-        Components.utils.import("resource://calendar/modules/calViewUtils.jsm");
+        Components.utils.import("resource://calendar/modules/calUtils.jsm");
 
          // Set the preference for the default start of the week
          this.weekStartOffset = Preferences.get("calendar.week.start", 0);
@@ -635,7 +633,7 @@
 
             var day = createXULElement("label");
             day.setAttribute("flex","1");
-            var monthName = calGetString("dateFormat", "month." + (m+1) + ".Mmm");
+            var monthName = cal.l10n.getAnyString("calendar", "dateFormat", "month." + (m+1) + ".Mmm");
             day.setAttribute("value",monthName);
             row.appendChild(day);
 
@@ -773,23 +771,23 @@
         <parameter name="aSuppressEvent"/>
         <body><![CDATA[
           if (this.mSelectedItems.length) {
-              for each (var item in this.mSelectedItems) {
+              this.mSelectedItems.forEach(item => {
                   let oldboxes = this.findDayBoxesForItem(item);
-                  for each (oldbox in oldboxes) {
+                  oldboxes.forEach(oldbox => {
                       oldbox.unselectItem(item);
-                  }
-              }
+                  });
+              });
           }
 
           this.mSelectedItems = aItems || [];
 
           if (this.mSelectedItems.length) {
-              for each (var item in this.mSelectedItems) {
+              this.mSelectedItems.forEach(item => {
                   let newboxes = this.findDayBoxesForItem(item);
-                  for each (newbox in newboxes) {
+                  newboxes.forEach(newbox => {
                       newbox.selectItem(item);
-                  }
-              }
+                  });
+              });
           }
 
           if (!aSuppressEvent) {
@@ -1029,7 +1027,7 @@
                 let weekLabel = document.getAnonymousElementByAttribute(daybox, "anonid", "week-label");
                 weekLabel.removeAttribute("hidden"); // display it
                 let weekNumber = cal.getWeekInfoService().getWeekTitle(date);
-                let weekString = cal.calGetString("calendar", "abbreviationOfWeek", [weekNumber]);
+                let weekString = cal.l10n.getAnyString("calendar", "calendar", "abbreviationOfWeek", [weekNumber]);
                 if (currentWeekNumber != weekString){ // ...this is a new week
                   weekLabel.value = weekString; // so we display it
                   currentWeekNumber = weekString; // actualize the current week number
@@ -1104,7 +1102,8 @@
       <method name="findDayBoxForDate">
         <parameter name="aDate"/>
         <body><![CDATA[
-          for each (box in this.mDateBoxes) {
+          for (var k in this.mDateBoxes) {
+            var box = this.mDateBoxes[k];
             if (box.mDate!=null && box.mDate.compare(aDate) == 0)
               return box;
           }
@@ -1120,10 +1119,10 @@
           var boxes = new Array();
 
           // All our boxes are in default tz, so we need these times in them too.
-          if (isEvent(aItem)) {
+          if (cal.item.isEvent(aItem)) {
             targetDate = aItem.startDate.getInTimezone(this.mTimezone);
             finishDate = aItem.endDate.getInTimezone(this.mTimezone);
-          } else if (isToDo(aItem)) {
+          } else if (cal.item.isToDo(aItem)) {
             if (aItem.entryDate) {
               targetDate = aItem.entryDate.getInTimezone(this.mTimezone);
               if (aItem.dueDate) {
@@ -1181,9 +1180,9 @@
           if (!boxes.length)
             return;
 
-          for each (box in boxes) {
+          boxes.forEach(box => {
             box.addItem(aItem);
-          }
+          });
         ]]></body>
       </method>
 
@@ -1202,9 +1201,9 @@
           var oldLength = this.mSelectedItems.length;
           this.mSelectedItems = this.mSelectedItems.filter(isNotItem);
 
-          for each (box in boxes) {
+          boxes.forEach(box => {
             box.deleteItem(aItem);
-          }
+          });
 
           // If a deleted event was selected, we need to announce that the
           // selection changed.
@@ -1218,16 +1217,16 @@
         <parameter name="aCalendar"/>
         <body><![CDATA[
           let deleteHash = {};
-          for each (let box in this.mDateBoxes) {
+          this.mDateBoxes.forEach(box => {
             let boxItemData = Array.slice(box.mItemData);
-            for each (let itemData in boxItemData) {
+            boxItemData.forEach(itemData => {
               let item = itemData.item;
               if (!deleteHash[item.hashId] && item.calendar.id == aCalendar.id) {
                 deleteHash[item.hashId] = true;
                 this.doDeleteItem(item);
               }
-            }
-          }
+            });
+          });
         ]]></body>
       </method>
 
@@ -1246,8 +1245,9 @@
           // Make sure the flashing attribute is set or reset on all visible
           // boxes.
           let boxes = this.findDayBoxesForItem(aAlarmItem);
-          for each (var box in boxes) {
-            for each (var itemData in box.mItemData) {
+          this.mDateBoxes.forEach(box => {
+            let boxItemData = Array.slice(box.mItemData);
+            boxItemData.forEach(itemData => {
               if (itemData.item.hasSameIds(aAlarmItem)) {
                 if (aStop) {
                   itemData.box.removeAttribute("flashing");
@@ -1255,8 +1255,8 @@
                   itemData.box.setAttribute("flashing", "true");
                 }
               }
-            }
-          }
+            });
+          });
 
           if (!aStop) {
             // Set up a timer to stop the flashing after the total time.
