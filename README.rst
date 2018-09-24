@@ -15,3 +15,4 @@ Contributes
 - German localization by Jens Maurer
 - Spanish localization by Jose Baeza Noci
 - Swedish localization by Mikael Hiort af Ornäs
+... and many others I lost track of. Check git logs :)

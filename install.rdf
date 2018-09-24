@@ -6,7 +6,7 @@
         <em:id>yearview@kirgroup.com</em:id>
         <em:type>2</em:type>
         <em:name>Year View</em:name>
-        <em:version>0.5.0</em:version>
+        <em:version>0.6.0</em:version>
         <em:creator>Fabio Comuni</em:creator>
         <em:translator>Eric Brosselin</em:translator>
         <em:translator>Jens Maurer</em:translator>
@@ -18,24 +18,26 @@
         <em:translator>gutierrez</em:translator>
         <em:translator>Georgi D. Sotirov</em:translator>
         <em:description>Year view for calendar</em:description>
-        <em:homepageURL>http://kirgroup.com/</em:homepageURL>
+        <em:homepageURL>https://kirgroup.com/~yearview</em:homepageURL>
         <em:iconURL>chrome://calendaryearview/skin/icon-32.png</em:iconURL>
         <em:targetApplication>
           <RDF:Description>
             <!-- thunderbird-->
             <em:id>{3550f703-e582-4d05-9a08-453d09bdfdc6}</em:id>
-            <em:minVersion>6.0</em:minVersion>
+            <em:minVersion>60.0</em:minVersion>
             <em:maxVersion>60.*</em:maxVersion>
           </RDF:Description>
         </em:targetApplication>
-        <em:targetApplication>
+        <!-- <em:targetApplication> 
+          // Seamonkey comes with Lightning 5.4.
+          // Year View 0.6 needs Lightning 6.*
           <RDF:Description>
-            <!-- Seamonkey -->
+            <! seamonkey >
             <em:id>{92650c4d-4b8e-4d2a-b7eb-24ecf4f6b63a}</em:id>
             <em:minVersion>2.2</em:minVersion>
             <em:maxVersion>2.49.*</em:maxVersion>
           </RDF:Description>
-        </em:targetApplication>
+        </em:targetApplication> -->
         <em:localized>
           <RDF:Description>
             <em:locale>it-IT</em:locale>
