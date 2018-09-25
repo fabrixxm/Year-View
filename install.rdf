@@ -28,14 +28,12 @@
             <em:maxVersion>60.*</em:maxVersion>
           </RDF:Description>
         </em:targetApplication>
-        <!-- <em:targetApplication> 
-          // Seamonkey comes with Lightning 5.4.
-          // Year View 0.6 needs Lightning 6.*
+        <em:targetApplication> 
           <RDF:Description>
-            <! seamonkey >
+            <!-- seamonkey -->
             <em:id>{92650c4d-4b8e-4d2a-b7eb-24ecf4f6b63a}</em:id>
-            <em:minVersion>2.2</em:minVersion>
-            <em:maxVersion>2.49.*</em:maxVersion>
+            <em:minVersion>2.57</em:minVersion>
+            <em:maxVersion>2.57.*</em:maxVersion>
           </RDF:Description>
         </em:targetApplication> -->
         <em:localized>
