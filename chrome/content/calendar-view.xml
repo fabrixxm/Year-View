@@ -64,7 +64,7 @@
 
                     aDate = aDate.getInTimezone(this.timezone);
                     aDate.isDate=true;
-					d1=aDate.clone();
+                    d1=aDate.clone();
                     d1.day=1;
                     d1.month=0;
                     d2=d1.clone();
