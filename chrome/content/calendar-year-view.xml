@@ -650,6 +650,14 @@
 
         this.mItemsSlot = {};
 
+
+        // get all calendars and add an observer
+        console.log("calendars", cal.getCalendarManager().getCalendars({}));
+        cal.getCalendarManager().getCalendars({}).forEach(aCalendar => {
+          console.log("add observer to", aCalendar.id);
+          aCalendar.addObserver(this.calObserver);
+        });
+
       ]]></constructor>
 
       <!-- fields -->
@@ -660,6 +668,38 @@
       <field name="mShowFullMonth">true</field>
 
       <field name="mItemsSlot">null</field>
+
+      <field name="calObserver"><![CDATA[
+        ({
+            calYearView: this,
+            QueryInterface: XPCOMUtils.generateQI([Components.interfaces.calIObserver]),
+
+            // calIObserver. Note that each registered calendar uses this observer
+            onStartBatch: function() { },
+            onEndBatch: function() { },
+            onLoad: function() { },
+
+            onAddItem: function(aItem) { },
+            onModifyItem: function(aNewItem, aOldItem) { },
+            onDeleteItem: function(aDeletedItem) { },
+            onError: function(aCalendar, aErrNo, aMessage) { },
+
+            onPropertyChanged: function(aCalendar, aName, aValue, aOldValue) {
+                switch (aName) {
+                    case "hide-yearview":
+                      console.log("onPropertyChanged", aName);
+                      this.calYearView.relayout();
+                }
+            },
+
+            onPropertyDeleting: function(aCalendar, aName) {
+                // Since the old value is not used directly in onPropertyChanged,
+                // but should not be the same as the value, set it to a different
+                // value.
+                this.onPropertyChanged(aCalendar, aName, null, null);
+            }
+        })
+      ]]></field>
 
       <!-- other methods -->
       <method name="setAttribute">
@@ -864,6 +904,7 @@
          cal.navigationBar.setDateRange(aStartDate, aEndDate);
         ]]></body>
       </method>
+
       <method name="mylog">
          <parameter name="aMessage"/>
          <body><![CDATA[
@@ -872,6 +913,7 @@
             consoleService.logStringMessage(aMessage);
          ]]></body>
       </method>
+
       <method name="setDateList">
         <parameter name="aCount"/>
         <parameter name="aDates"/>
