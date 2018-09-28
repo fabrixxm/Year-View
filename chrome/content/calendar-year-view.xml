@@ -686,9 +686,8 @@
 
             onPropertyChanged: function(aCalendar, aName, aValue, aOldValue) {
                 switch (aName) {
-                    case "hide-yearview":
-                      console.log("onPropertyChanged", aName);
-                      this.calYearView.relayout();
+                    case "yearview.hide":
+                      this.calYearView.refreshView();
                 }
             },
 
@@ -758,7 +757,7 @@
         <parameter name="aTopic"/>
         <parameter name="aPreference"/>
         <body><![CDATA[
-           aSubject.QueryInterface(Components.interfaces.nsIPrefBranch2);
+           aSubject.QueryInterface(Components.interfaces.nsIPrefBranch);
 
            switch (aPreference) {
                case "calendar.previousweeks.inview":
@@ -1287,18 +1286,20 @@
           // Make sure the flashing attribute is set or reset on all visible
           // boxes.
           let boxes = this.findDayBoxesForItem(aAlarmItem);
-          this.mDateBoxes.forEach(box => {
-            let boxItemData = Array.slice(box.mItemData);
-            boxItemData.forEach(itemData => {
-              if (itemData.item.hasSameIds(aAlarmItem)) {
-                if (aStop) {
-                  itemData.box.removeAttribute("flashing");
-                } else {
-                  itemData.box.setAttribute("flashing", "true");
-                }
-              }
-            });
-          });
+          if (this.mDateBoxes !== null) {
+              this.mDateBoxes.forEach(box => {
+                let boxItemData = Array.slice(box.mItemData);
+                boxItemData.forEach(itemData => {
+                  if (itemData.item.hasSameIds(aAlarmItem)) {
+                    if (aStop) {
+                      itemData.box.removeAttribute("flashing");
+                    } else {
+                      itemData.box.setAttribute("flashing", "true");
+                    }
+                  }
+                });
+              });
+          }
 
           if (!aStop) {
             // Set up a timer to stop the flashing after the total time.
