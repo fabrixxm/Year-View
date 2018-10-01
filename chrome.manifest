@@ -24,3 +24,7 @@ overlay chrome://calendar/content/calendar-common-sets.xul chrome://calendaryear
 overlay	chrome://lightning/content/messenger-overlay-sidebar.xul   chrome://calendaryearview/content/calendaryearview-overlay-sidebar.xul
 
 overlay chrome://calendar/content/calendar-properties-dialog.xul   chrome://calendaryearview/content/calendar-properties-dialog-overlay.xul
+
+resource calendaryearview .
+
+manifest components/components.manifest

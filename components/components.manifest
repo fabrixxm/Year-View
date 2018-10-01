@@ -1,0 +1,3 @@
+component {9977735b-9418-47e5-b5b6-0e9f8981ac49} calYearImportExportModule.js
+contract @mozilla.org/calendar/printformatter;1?type=yeargrid {9977735b-9418-47e5-b5b6-0e9f8981ac49}
+category cal-print-formatters cal-year-printformatter @mozilla.org/calendar/printformatter;1?type=yeargrid

@@ -1,0 +1,75 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.1//EN"
+   "http://www.w3.org/TR/xhtml11/DTD/xhtml11.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <title id="title"/>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
+    <style type="text/css" id="sheet">
+      .main-table { font-size: 26px; font-weight: bold; }
+      .month-name { border: 1px solid black; background-color: white; font-size: 12px; font-weight: bold; }
+      .day-box { border: 1px solid black; vertical-align: top; }
+      .out-of-year { background-color: white !important; }
+      .day-off { background-color: white !important; }
+      .taskItem { border-bottom: 1px solid #F3F3F3; }
+      .tasks { margin: 5px; }
+      .taskList { margin: 0px; list-style-image: none; list-style-type: none; padding: 0px; }
+  </style>
+  </head>
+  <body>
+    <div id="year-container"/>
+    <div id="tasks-list-box" hidden="true">
+      <h3 id="tasks-title"/>
+      <ul class="taskList" id="task-container"/>
+    </div>
+
+    <!-- Templates follow -->
+    <div id="templates" hidden="true">
+      <li id="task-template">
+        <input type="checkbox" class="task-checkbox" disabled="disabled"/>
+        <span class="task-title"/>
+      </li>
+      <tr id="month-row-template">
+        <td class="day-name day1-name"></td>
+        <td class="month-day month1-day"></td>
+        <td class="month-day month2-day"></td>
+        <td class="month-day month3-day"></td>
+        <td class="month-day month4-day"></td>
+        <td class="month-day month5-day"></td>
+        <td class="month-day month6-day"></td>
+        <td class="month-day month7-day"></td>
+        <td class="month-day month8-day"></td>
+        <td class="month-day month9-day"></td>
+        <td class="month-day month10-day"></td>
+        <td class="month-day month11-day"></td>
+        <td class="month-day month12-day"></td>
+      </tr>
+      <div id="year-template">
+          <table border="0" width="100%" class="main-table">
+              <tr>
+                <td align="center" valign="bottom" class="year-name"/>
+              </tr>
+            </table>
+        <thead>
+          <tr>
+            <th></th>
+            <th class="month-name .month1-name"></th>
+            <th class="month-name .month2-name"></th>
+            <th class="month-name .month3-name"></th>
+            <th class="month-name .month4-name"></th>
+            <th class="month-name .month5-name"></th>
+            <th class="month-name .month6-name"></th>
+            <th class="month-name .month7-name"></th>
+            <th class="month-name .month8-name"></th>
+            <th class="month-name .month9-name"></th>
+            <th class="month-name .month10-name"></th>
+            <th class="month-name .month11-name"></th>
+            <th class="month-name .month12-name"></th>
+          </tr>
+        </thead>
+        <tbody id="year-table">
+          
+        </tbody>
+      </table>
+    </div>
+  </body>
+</html>
