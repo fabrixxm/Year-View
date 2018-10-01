@@ -39,13 +39,13 @@ calYearPrinter.prototype = {
         // Table that maps YYYY-MM-DD to the DOM node container where items are to be added
         let dayTable = {};
 
-
-        
-        for(var year = aStart.year; year <= aEnd.year; year++) {
-            var thisYearDate = aStart.clone();
-            thisYearDate.month = 0;
-            thisYearDate.day = 1;
-            this.setupYear(document, thisYearDate, dayTable);
+        if (aStart && aEnd) {
+            for(var year = aStart.year; year < aEnd.year; year++) {
+                var thisYearDate = aStart.clone();
+                thisYearDate.month = 0;
+                thisYearDate.day = 1;
+                this.setupYear(document, thisYearDate, dayTable);
+            }
         }
 
 
@@ -61,7 +61,7 @@ calYearPrinter.prototype = {
             itemStartDate = itemStartDate.getInTimezone(defaultTimezone);
             itemEndDate = itemEndDate.getInTimezone(defaultTimezone);
 
-            /*let boxDate = itemStartDate.clone();
+            let boxDate = itemStartDate.clone();
             boxDate.isDate = true;
             for (boxDate; boxDate.compare(itemEndDate) < (itemEndDate.isDate ? 0 : 1); boxDate.day++) {
                 // Ignore items outside of the range, i.e tasks without start date
@@ -75,19 +75,15 @@ calYearPrinter.prototype = {
 
                 if (!(boxDateKey in dayTable)) {
                     // Doesn't exist, we need to create a new table for it
-                    let startOfMonth = boxDate.startOfMonth;
-                    this.setupMonth(document, startOfMonth, dayTable);
+                    this.setupYear(document, boxDate, dayTable);
                 }
 
-                let dayBoxes = dayTable[boxDateKey];
-                let addSingleItem = cal.print.addItemToDaybox.bind(cal.print, document, item, boxDate);
+                let dayBox = dayTable[boxDateKey];
+               
 
-                if (Array.isArray(dayBoxes)) {
-                    dayBoxes.forEach(addSingleItem);
-                } else {
-                    addSingleItem(dayBoxes);
-                }
-            }*/
+                dayBox.classList.add("event");
+               
+            }
         }
 
         // Remove templates from HTML, no longer needed
@@ -104,28 +100,62 @@ calYearPrinter.prototype = {
 
 
     setupYear: function(document, thisdate, dayTable) {
-      let yearTemplate = document.getElementById("year-template");
-      let yearTable = document.getElementById("year-table");
-      let dayTemplate = document.getElementById("month-row-template");
+        const weekdayMap = ["sunday", "monday", "tuesday", "wednesday", "thursday", "friday", "saturday"];
+    
+        let yearTemplate = document.getElementById("year-template");
+        let dayTemplate = document.getElementById("month-row-template");
 
-      // Clone the template  and make sure it doesn't have an id
-      let currentYear = yearTemplate.cloneNode(true);
-      currentYear.removeAttribute("id");
-      currentYear.querySelector("year-name").textContent = thisdate.year;
+        // Clone the template  and make sure it doesn't have an id
+        let currentYear = yearTemplate.cloneNode(true);
+        currentYear.removeAttribute("id");
+        currentYear.querySelector(".year-name").textContent = thisdate.year;
 
-      
-      var maxday=37;
+        var maxday=37;
 
-      // Set up the month title
-      for (var i = 1; i<13; i++) {
-        let monthName = cal.l10n.formatMonth( i, "calendar", "monthInYear");
-        let monthTitle = cal.l10n.getCalString("monthInYear", [monthName, thisdate.year]);
-        currentYear.querySelector(".month"+i+"-name").textContent = monthTitle;
-      }
+        // Set up the month title
+        for (var i = 1; i<13; i++) {
+            let monthName = cal.l10n.getAnyString("calendar", "dateFormat", "month." + i + ".Mmm");
+            currentYear.querySelector(".month"+i+"-name").textContent = monthName;
+        }
 
-      
-      
-      document.getElementById("year-container").appendChild(currentYear);
+        let yearTable = currentYear.querySelector("#year-table");
+
+        var mDate = thisdate.clone();
+        for (var i=0; i<maxday; i++) {
+            let dayBoxes = dayTemplate.cloneNode(true);
+            dayBoxes.removeAttribute("id");
+            var weekDay = i % 7;
+            var weekDayLabel = cal.getDateFormatter().shortDayName(weekDay)[0];
+            dayBoxes.querySelector(".day-name").textContent = weekDayLabel;
+           
+            var dayOffPrefName = "calendar.week.d" + weekDay + weekdayMap[weekDay] + "soff";
+            if (Preferences.get(dayOffPrefName, false)) {
+                dayBoxes.className += " day-off";
+            }
+
+            yearTable.appendChild(dayBoxes);
+            
+            for(var m=0; m<12; m++) {
+                mDate.day = 1;
+                mDate.month = m;
+                mDate.year = thisdate.year;            
+                var firstday =  mDate.weekday;
+                var lastday = mDate.endOfMonth.day+mDate.weekday;
+                
+                var dayBox = dayBoxes.querySelector(".month"+(m+1)+"-day");
+                
+                
+                if (i>= firstday && i<=lastday) {
+                    mDate.day = i - firstday;
+                    var dateKey = cal.print.getDateKey(mDate);
+                    dayTable[dateKey] = dayBox
+                } else {
+                    dayBox.className += " out-of-month";
+                }
+            }
+        }
+
+        document.getElementById("year-container").appendChild(currentYear);
   },
 
    

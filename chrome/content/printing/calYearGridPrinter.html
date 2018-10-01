@@ -5,11 +5,18 @@
     <title id="title"/>
     <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
     <style type="text/css" id="sheet">
-      .main-table { font-size: 26px; font-weight: bold; }
-      .month-name { border: 1px solid black; background-color: white; font-size: 12px; font-weight: bold; }
+      @page { margin: 1.5cm } 
+      .main-table { font-size: 16px; font-weight: bold; }
+      .grid-table { border-spacing: 1px; border-collapse: collapse; }
+      .month-name { border-bottom: 1px solid black; padding: 1px; background-color: white; font-size: 12px; font-weight: bold; }
+      .day-name { text-align: center; padding: 1px; }
+      .month-row { border-bottom: 1px solid #666666; }
+      .month-day { }
+      .event { border: 6px solid black; box-sizing: border-box; }
+      
+      .out-of-month { color:#ccc; background-color: white !important; }
+      .day-off { color: #888; background-color: white !important; }
       .day-box { border: 1px solid black; vertical-align: top; }
-      .out-of-year { background-color: white !important; }
-      .day-off { background-color: white !important; }
       .taskItem { border-bottom: 1px solid #F3F3F3; }
       .tasks { margin: 5px; }
       .taskList { margin: 0px; list-style-image: none; list-style-type: none; padding: 0px; }
@@ -28,8 +35,8 @@
         <input type="checkbox" class="task-checkbox" disabled="disabled"/>
         <span class="task-title"/>
       </li>
-      <tr id="month-row-template">
-        <td class="day-name day1-name"></td>
+      <tr id="month-row-template" class="month-row">
+        <td class="day-name"></td>
         <td class="month-day month1-day"></td>
         <td class="month-day month2-day"></td>
         <td class="month-day month3-day"></td>
@@ -43,33 +50,35 @@
         <td class="month-day month11-day"></td>
         <td class="month-day month12-day"></td>
       </tr>
-      <div id="year-template">
+      <div id="year-template" style="page-break-after: always;">
           <table border="0" width="100%" class="main-table">
+            <tr>
+              <td align="center" valign="bottom" class="year-name"/>
+            </tr>
+          </table>
+          <table border="0" width="100%" class="grid-table">
+            <thead>
               <tr>
-                <td align="center" valign="bottom" class="year-name"/>
+                <th></th>
+                <th class="month-name month1-name"></th>
+                <th class="month-name month2-name"></th>
+                <th class="month-name month3-name"></th>
+                <th class="month-name month4-name"></th>
+                <th class="month-name month5-name"></th>
+                <th class="month-name month6-name"></th>
+                <th class="month-name month7-name"></th>
+                <th class="month-name month8-name"></th>
+                <th class="month-name month9-name"></th>
+                <th class="month-name month10-name"></th>
+                <th class="month-name month11-name"></th>
+                <th class="month-name month12-name"></th>
               </tr>
-            </table>
-        <thead>
-          <tr>
-            <th></th>
-            <th class="month-name .month1-name"></th>
-            <th class="month-name .month2-name"></th>
-            <th class="month-name .month3-name"></th>
-            <th class="month-name .month4-name"></th>
-            <th class="month-name .month5-name"></th>
-            <th class="month-name .month6-name"></th>
-            <th class="month-name .month7-name"></th>
-            <th class="month-name .month8-name"></th>
-            <th class="month-name .month9-name"></th>
-            <th class="month-name .month10-name"></th>
-            <th class="month-name .month11-name"></th>
-            <th class="month-name .month12-name"></th>
-          </tr>
-        </thead>
-        <tbody id="year-table">
-          
-        </tbody>
-      </table>
+            </thead>
+            <tbody id="year-table">
+              
+            </tbody>
+          </table>
+      </div>
     </div>
   </body>
 </html>
