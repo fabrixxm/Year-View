@@ -95,4 +95,4 @@ calendar-year-day-box-item .event-container { height: 3px; }*/
 calendar-year-day-box-item label{ font-size: 5pt; }
 calendar-year-day-box-item .alarm-image { height: 6px; width: 6px; }
 calendar-year-day-box-item .reminder-icon { height: 6px;}
-.reminder-icon { -moz-image-region: rect(0px 1px 1px 17px); }
+calendar-year-day-box-item .reminder-icon { -moz-image-region: rect(0px 1px 1px 17px); }
