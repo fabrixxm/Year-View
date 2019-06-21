@@ -8,11 +8,13 @@ PROFILEPATH=$(shell ./devtools.py --profile)
 CACHEPATH=$(shell ./devtools.py --cache)
 
 
+.PHONY: clean run help all
+
+all: ${OUTPUT}
+
 ${OUTPUT}: install.rdf chrome.manifest ${CHROMEFILES} ${COMPONENTSFILES} ${JSFILES}
 	zip -r ${OUTPUT} install.rdf chrome.manifest chrome components calendar-js
 
-
-.PHONY: clean run
 clean:
 	rm -f ${OUTPUT}
 
@@ -23,3 +25,12 @@ run:
 
 dev-install:
 	echo $(PWD) > "${PROFILEPATH}/extensions/yearview@kirgroup.com"
+
+help:
+	@echo "targets:"
+	@echo
+	@echo "\tall\t\tcreate or update ${OUTPUT} (default)"
+	@echo "\tclean\t\tdelete build"
+	@echo "\trun\t\trun thunderbird with clean startup cache and the js console"
+	@echo "\tdev-install\tinstall Year-View in thunderbird in development mode"
+	@echo
