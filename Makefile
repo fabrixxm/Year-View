@@ -13,7 +13,7 @@ CACHEPATH=$(shell ./devtools.py --cache)
 all: ${OUTPUT}
 
 ${OUTPUT}: install.rdf chrome.manifest ${CHROMEFILES} ${COMPONENTSFILES} ${JSFILES}
-	zip -r ${OUTPUT} install.rdf chrome.manifest chrome components calendar-js
+	zip -r ${OUTPUT} install.rdf chrome.manifest chrome components calendar-js -x *.DS_*
 
 clean:
 	rm -f ${OUTPUT}
