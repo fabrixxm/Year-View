@@ -7,6 +7,13 @@
 [![saythanks](https://img.shields.io/badge/say-thanks-ff69b4.svg)](https://saythanks.io/to/fabrixxm)
 [![Awesome Badges](https://img.shields.io/badge/badges-awesome-green.svg)](https://github.com/Naereen/badges)
 
-Year View it's a Thunderbird/Lightning add-on to add a year view to the calendar
+Year View it's a Thunderbird 60/Lightning add-on to add a year view to the calendar
 
 ![screenshot](https://addons.thunderbird.net/user-media/previews/full/205/205469.png)
+
+# NOTE about Thunderbird 68 / 70
+
+This addon is in low maintenance mode and supports only Thunderbird 60.
+
+There is no plan to update to support TB68 or TB70. I don't have time, resource
+and motivation to keep work on this.
